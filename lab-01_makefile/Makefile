@@ -25,7 +25,7 @@ obj/io.o: src/io.c
 obj/algorithm.o: src/algorithm.c
 	$(CC) $(CFLAGS) $(INCLUDES) src/algorithm.c -o obj/algorithm.o
 
-link:
+link: obj/*.o
 	$(CC) obj/*.o -o $(EXECUTABLE)
 
 clean:
