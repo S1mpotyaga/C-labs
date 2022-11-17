@@ -16,12 +16,8 @@ void test_strcpy() {
 }
 
 void test_strcat() {
-	char a[] = "abacaba", b[] = "cad";
-	
-	char a1[10], b1[10];
-
-	strcpy(a1, a);
-	strcpy(b1, b);
+	char a[100] = "abacaba", b[] = "cad";
+	char a1[100] = "abacaba", b1[] = "cad";
 	
 	strcat(a, b);
 	my_strcat(a1, b1);
