@@ -1,9 +1,9 @@
 #include "str.h"
 #include <stddef.h>
 
-char* my_strcpy(char* s_dest, char* s_from) {
+char* my_strcpy(char* restrict s_dest, const char* restrict s_from) {
 	char* it_dest = s_dest;
-	char* it_from = s_from;
+	char* it_from = (char*) s_from;
 	while ((*it_from) != '\0') {
 		*it_dest = (*it_from);
 		it_dest++;
@@ -13,27 +13,30 @@ char* my_strcpy(char* s_dest, char* s_from) {
 	return s_dest;
 }
 
-char *my_strcat(char* dest, char* from) {
+char *my_strcat(char* restrict dest, const char* restrict from) {
 	char* it_dest = dest;
 	while ((*it_dest) != '\0') it_dest++;
 	my_strcpy(it_dest, from);
 	return dest;
 }
 
-int my_strcmp(char* s, char* t) {
-	while ((*s) != '\0' && (*t) != '\0') {
-		if ((*s) != (*t)) return (*s) - (*t);
-		s++;
-		t++;
+int my_strcmp(const char* s, const char* t) {
+	char* it_s = (char*) s;
+	char* it_t = (char*) t;
+	while ((*it_s) != '\0' && (*it_t) != '\0') {
+		if ((*it_s) != (*it_t)) return (*it_s) - (*it_t);
+		it_s++;
+		it_t++;
 	}
-	return (*s) - (*t);
+	return (*it_s) - (*it_t);
 }
 
-size_t my_strlen(char* s) {
+size_t my_strlen(const char* s) {
 	size_t len = 0;
-	while ((*s) != '\0') {
+	char* it_s = (char*) s;
+	while ((*it_s) != '\0') {
 		len++;
-		s++;
+		it_s++;
 	}
 	return len;
 }

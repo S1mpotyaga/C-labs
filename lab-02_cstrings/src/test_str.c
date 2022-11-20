@@ -5,23 +5,40 @@
 #include <stdio.h>
 
 void test_strcpy() {
-	char a[] = "abacaba", b[10];
-	my_strcpy(b, a);
+	char a[] = "abc", b[100] = "def";
+	assert(my_strcpy(b, a) == b);
 	assert(strcmp(b, a) == 0);
 
-	char a1[] = "";
-	char b1[] = "asdasd";
-	my_strcpy(b1, a1);
-	assert(strcmp(b1, a1) == 0);	
+	char a1[] = "", b1[100] = "asdasd";
+	assert(my_strcpy(b1, a1) == b1);
+	assert(strcmp(b1, a1) == 0);
+
+	char a2[] = "asdasd", b2[100] = "";
+	assert(my_strcpy(b2, a2) == b2);
+	assert(strcmp(b2, a2) == 0);	
+}
+
+void test_strcat_by_iter(char* a, char* b) {
+	char a1[100], b1[100];
+
+	strcpy(a1, a);
+	strcpy(b1, b);
+
+	strcat(a, b);
+	assert(my_strcat(a1, b1) == a1);
+	assert(strcpy(a, a1));
 }
 
 void test_strcat() {
 	char a[100] = "abacaba", b[] = "cad";
-	char a1[100] = "abacaba", b1[] = "cad";
-	
-	strcat(a, b);
-	my_strcat(a1, b1);
-	assert(strcpy(a, a1));
+	char a1[100] = "", b1[] = "cad";
+	char a2[100] = "acd", b2[] = "";
+	char a3[100] = "", b3[] = "";
+
+	test_strcat_by_iter(a, b);
+	test_strcat_by_iter(a1, b1);
+	test_strcat_by_iter(a2, b2);
+	test_strcat_by_iter(a3, b3);
 }
 
 int check(int a, int b) {
@@ -31,7 +48,7 @@ int check(int a, int b) {
 
 void test_strcmp() {
 	char a[] = "abacaba", b[] = "abacaba";
-	char c[] = "abadaba", d[] = "aba";
+	char c[] = "abadaba", d[] = "";
 
 	assert(check(my_strcmp(a, b), strcmp(a, b)));
 	assert(check(my_strcmp(a, c), strcmp(a, c)));
