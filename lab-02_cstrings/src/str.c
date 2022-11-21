@@ -2,8 +2,8 @@
 #include <stddef.h>
 
 char* my_strcpy(char* restrict s_dest, const char* restrict s_from) {
-	char* it_dest = s_dest;
-	char* it_from = (char*) s_from;
+	char* restrict it_dest = s_dest;
+	char* restrict it_from = (char*) s_from;
 	while ((*it_from) != '\0') {
 		*it_dest = (*it_from);
 		it_dest++;
@@ -14,7 +14,7 @@ char* my_strcpy(char* restrict s_dest, const char* restrict s_from) {
 }
 
 char *my_strcat(char* restrict dest, const char* restrict from) {
-	char* it_dest = dest;
+	char* restrict it_dest = dest;
 	while ((*it_dest) != '\0') it_dest++;
 	my_strcpy(it_dest, from);
 	return dest;
