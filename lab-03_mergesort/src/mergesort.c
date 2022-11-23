@@ -19,8 +19,9 @@ int mergesort(
     size_t elements, size_t element_size,
     int (*comparator)(const void *, const void *)
 ) {
-    if (elements == 1 || elements == 0) return 0;
-    size_t l = elements / 2, r = elements - l;
+    if (elements <= 1) return 0;
+    size_t l = elements / 2;
+    size_t r = elements - l;
     if (mergesort(array, l, element_size, comparator) != 0)
         return -1;
     if (mergesort(array + l * element_size, r, element_size, comparator) != 0)
@@ -28,7 +29,7 @@ int mergesort(
 
     void* result = malloc(elements * element_size);
     
-    if (result == 0) return -1;
+    if (result == NULL) return -1;
     void* itLeft = array;
     void* itRight = array + l * element_size;
 
