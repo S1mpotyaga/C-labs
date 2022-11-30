@@ -59,12 +59,10 @@ void remove_all_points(struct intrusive_list *l) {
     }
 }
 
-const size_t MAXT = 10;
-
 int main() {
     
+    const size_t MAXT = 10;
     char type[MAXT];
-    
 
     char c;
     size_t szType = 0;
@@ -97,9 +95,12 @@ int main() {
         } else if (strcmp(type, "exit") == 0) {
             break;
         } else {
-            printf("Uncnown command\n");
+            printf("Unknown command\n");
         }
     }
+    remove_all_points(l);
+    free(&l->head);
+    free(l);
 
-     return 0;
+    return 0;
 }
