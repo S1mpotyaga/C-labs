@@ -12,6 +12,11 @@ struct point {
     struct intrusive_node node;
 };
 
+void myFree(struct point* p) {
+    // printf("free of point %d %d\n", p->x, p->y);
+    free(p);
+}
+
 void add_point(struct intrusive_list *l, int x, int y) {
     struct point *p = malloc(sizeof(struct point));
     p->x = x;
@@ -28,7 +33,7 @@ void remove_point(struct intrusive_list *l, int x, int y) { // removes all (x, y
         if (p->x == x && p->y == y) {
             if (v->next != NULL) v->next->prev = v->prev;
             if (v->prev != NULL) v->prev->next = v->next;
-            free(p);
+            myFree(p);
         }
         v = u;
     }
@@ -54,7 +59,7 @@ void remove_all_points(struct intrusive_list *l) {
         u = v->next;
         if (v->next != NULL) v->next->prev = v->prev;
         if (v->prev != NULL) v->prev->next = v->next;
-        free(p);
+        myFree(p);
         v = u;
     }
 }
@@ -73,7 +78,7 @@ int main() {
     while (1) {
         szType = 0;
         while (1) {
-            scanf("%c", &c);
+            c = getchar();
             if (c == ' ' || c == '\n' || szType == MAXT - 1) {
                 type[szType++] = '\0';
                 break;
@@ -99,7 +104,7 @@ int main() {
         }
     }
     remove_all_points(l);
-    free(&l->head);
+    free(l->head);
     free(l);
 
     return 0;
