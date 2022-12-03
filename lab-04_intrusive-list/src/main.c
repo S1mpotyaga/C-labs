@@ -31,8 +31,7 @@ void remove_point(struct intrusive_list *l, int x, int y) { // removes all (x, y
         struct point *p = container_of(v, struct point, node);
         u = v->next;
         if (p->x == x && p->y == y) {
-            if (v->next != NULL) v->next->prev = v->prev;
-            if (v->prev != NULL) v->prev->next = v->next;
+            remove_node(l, v);
             myFree(p);
         }
         v = u;
@@ -57,8 +56,7 @@ void remove_all_points(struct intrusive_list *l) {
     while (v != NULL) {
         struct point *p = container_of(v, struct point, node);
         u = v->next;
-        if (v->next != NULL) v->next->prev = v->prev;
-        if (v->prev != NULL) v->prev->next = v->next;
+        remove_node(l, v);
         myFree(p);
         v = u;
     }
@@ -70,20 +68,20 @@ int main() {
     char type[MAXT];
 
     char c;
-    size_t szType = 0;
+    size_t size = 0;
     int x, y;
     struct intrusive_list *l = malloc(sizeof(struct intrusive_list));
     init_list(l);
 
     while (1) {
-        szType = 0;
+        size = 0;
         while (1) {
             c = getchar();
-            if (c == ' ' || c == '\n' || szType == MAXT - 1) {
-                type[szType++] = '\0';
+            if (c == ' ' || c == '\n' || size == MAXT - 1) {
+                type[size++] = '\0';
                 break;
             }
-            type[szType++] = c;
+            type[size++] = c;
         }
         if (strcmp(type, "add") == 0) {
             scanf("%d %d\n", &x, &y);
@@ -104,8 +102,7 @@ int main() {
         }
     }
     remove_all_points(l);
-    free(l->head);
-    free(l);
+    deinit_list(l);
 
     return 0;
 }

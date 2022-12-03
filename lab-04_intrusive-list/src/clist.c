@@ -8,12 +8,23 @@ void init_list(struct intrusive_list *l) {
 	l->head->prev = NULL;
 }
 
+void deinit_list(struct intrusive_list *l) {
+	free(l->head);
+    free(l);
+}
+
 void add_node(struct intrusive_list *l, struct intrusive_node *v) {
 	struct intrusive_node *u = l->head->next;
 	if (u != NULL) u->prev = v;
 	v->next = u;
 	v->prev = l->head;
 	l->head->next = v;
+}
+
+void remove_node(struct intrusive_list *l, struct intrusive_node *v) {
+	if (v == l->head) return;
+	if (v->next != NULL) v->next->prev = v->prev;
+    if (v->prev != NULL) v->prev->next = v->next;
 }
 
 int get_length(struct intrusive_list *l) {

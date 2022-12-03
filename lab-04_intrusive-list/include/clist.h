@@ -11,6 +11,7 @@ struct intrusive_list {
 };
 
 void init_list(struct intrusive_list *l);
+void deinit_list(struct intrusive_list *l);
 void add_node(struct intrusive_list *l, struct intrusive_node *v);
 void remove_node(struct intrusive_list *l, struct intrusive_node *v);
 
