@@ -35,7 +35,7 @@ void saveBin(struct intrusive_node* v, void* data) {
 
 int main(int argc, char* argv[]) {
 
-	const int MAXN = 10;
+	const int MAXN = 1000;
 
 	if (argc < 4) {
 		printf("Incorrect params count\n");
