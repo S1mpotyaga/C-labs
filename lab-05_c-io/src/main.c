@@ -111,6 +111,8 @@ int main(int argc, char* argv[]) {
 
 		fclose(fOut);
 	}
+	remove_all_points(l);
+	deinit_list(l);
 
 	return 0;
 }
