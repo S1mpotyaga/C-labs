@@ -10,7 +10,6 @@ void init_list(struct intrusive_list *l) {
 
 void deinit_list(struct intrusive_list *l) {
 	free(l->head);
-    free(l);
 }
 
 void add_node(struct intrusive_list *l, struct intrusive_node *v) {

@@ -29,8 +29,8 @@ void saveText(struct intrusive_node* v, void* data) {
 void saveBin(struct intrusive_node* v, void* data) {
 	FILE* f = (FILE*) data;
 	struct point* p = container_of(v, struct point, node);
-	fwrite(&(p->x), 3, 1, f);
-	fwrite(&(p->y), 3, 1, f);
+	fwrite(&(p->x), BITE_COUNT, 1, f);
+	fwrite(&(p->y), BITE_COUNT, 1, f);
 }
 
 int main(int argc, char* argv[]) {
@@ -61,9 +61,12 @@ int main(int argc, char* argv[]) {
 	} else if(strcmp(fileType, "loadbin") == 0) {
 		fIn = fopen(inFile, "rb");
 
-		while (fread(&x[cntPoints], BITE_COUNT, 1, fIn) == 1 && 
-				fread(&y[cntPoints], BITE_COUNT, 1, fIn) == 1)
+		while (1)
 		{
+			x[cntPoints] = 0;
+			y[cntPoints] = 0;
+			if (fread(&x[cntPoints], BITE_COUNT, 1, fIn) == 0) break;
+			if (fread(&y[cntPoints], BITE_COUNT, 1, fIn) == 0) break;
 			cntPoints++;
 		}
 	} else {
@@ -82,6 +85,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (strcmp(action, "print") == 0) {
+		if (argc < 5) {
+			printf("Incorrect count of params\n");
+			return 0;
+		}
 		char* formatString = argv[4];
 		apply(l, printElem, formatString);
 		printf("\n");
@@ -95,12 +102,11 @@ int main(int argc, char* argv[]) {
 			return 0;
 		}
 		FILE* fOut = NULL;
+		char* outFile = argv[4];
 		if (strcmp(action, "savetext") == 0) {
-			char* outFile = argv[4];
 			fOut = fopen(outFile, "w");
 			apply(l, saveText, fOut);
 		} else if (strcmp(action, "savebin") == 0) {
-			char* outFile = argv[4];
 			fOut = fopen(outFile, "wb");
 			apply(l, saveBin, fOut);
 		} else {
@@ -113,6 +119,7 @@ int main(int argc, char* argv[]) {
 	}
 	remove_all_points(l);
 	deinit_list(l);
+	free(l);
 
 	return 0;
 }
