@@ -8,6 +8,7 @@ struct intrusive_node {
 
 struct intrusive_list {
     struct intrusive_node *head;
+    struct intrusive_node *tail;
 };
 
 void init_list(struct intrusive_list *l);
@@ -15,7 +16,6 @@ void deinit_list(struct intrusive_list *l);
 void add_node(struct intrusive_list *l, struct intrusive_node *v);
 void remove_node(struct intrusive_list *l, struct intrusive_node *v);
 void apply(struct intrusive_list* l, void (*op)(struct intrusive_node *node, void *data), void *data);
-    
-int get_length(struct intrusive_list *l);
+
 
 #endif
