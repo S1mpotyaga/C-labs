@@ -33,6 +33,12 @@ void saveBin(struct intrusive_node* v, void* data) {
 	fwrite(&(p->y), BITE_COUNT, 1, f);
 }
 
+int convert(int x) {
+	if ((x & (1 << 23)) == 0) return x;
+	for (int i = 24; i < 32; i++) x |= (1 << i);
+	return x;
+}
+
 int main(int argc, char* argv[]) {
 
 	const int MAXN = 1e6;
@@ -67,6 +73,8 @@ int main(int argc, char* argv[]) {
 			y[cntPoints] = 0;
 			if (fread(&x[cntPoints], BITE_COUNT, 1, fIn) == 0) break;
 			if (fread(&y[cntPoints], BITE_COUNT, 1, fIn) == 0) break;
+			x[cntPoints] = convert(x[cntPoints]);
+			y[cntPoints] = convert(y[cntPoints]);
 			cntPoints++;
 		}
 	} else {
