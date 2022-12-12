@@ -23,6 +23,7 @@ void add_node(struct intrusive_list *l, struct intrusive_node *v) {
 
 void remove_node(struct intrusive_list *l, struct intrusive_node *v) {
 	if (v == l->head) return;
+	if (v == l->tail) l->tail = v->prev;
 	if (v->next != NULL) v->next->prev = v->prev;
     if (v->prev != NULL) v->prev->next = v->next;
 }

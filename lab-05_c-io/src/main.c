@@ -84,12 +84,19 @@ int main(int argc, char* argv[]) {
 		
 		remove_all_points(l);
 		deinit_list(l);
+		free(l);
 		return 0;
 	}
 
 	fclose(fIn);
 
 	if (strcmp(action, "print") == 0) {
+		if (argc < 5) {
+			printf("Incorrect count of params\n");
+			remove_all_points(l);
+			deinit_list(l);
+			free(l);
+		}
 		char* formatString = argv[4];
 		apply(l, printElem, formatString);
 		printf("\n");
@@ -99,6 +106,12 @@ int main(int argc, char* argv[]) {
 		printf("%d\n", count);	
 	} else {
 		FILE* fOut = NULL;
+		if (argc < 5) {
+			printf("Incorrect count of params\n");
+			remove_all_points(l);
+			deinit_list(l);
+			free(l);
+		}
 		char* outFile = argv[4];
 		if (strcmp(action, "savetext") == 0) {
 			fOut = fopen(outFile, "w");
@@ -106,6 +119,12 @@ int main(int argc, char* argv[]) {
 		} else if (strcmp(action, "savebin") == 0) {
 			fOut = fopen(outFile, "wb");
 			apply(l, saveBin, fOut);
+		} else {
+			printf("Incorrect mode\n");
+			fclose(fOut);
+			remove_all_points(l);
+			deinit_list(l);
+			free(l);
 		}
 
 		fclose(fOut);
