@@ -88,6 +88,7 @@ bool checkHeader(BMPHeader* header,
  
 bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
 
+    image->data = NULL;
     FILE* file = fopen(filename, "rb");
     
     if (file == NULL) {
@@ -108,13 +109,11 @@ bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
         return false;
     }
 
-    // Allocate memory for image data
     image->data = malloc(sizeof(*image->data) * image->header.imageSizeBytes);
     if (image->data == NULL) {
-        fclose(file);
         return false;
     }
-    // Read image data
+
     if(fread(image->data, image->header.imageSizeBytes, 1, file) != 1) {
         fclose(file);
         return false;
@@ -157,6 +156,8 @@ int getPositionXRow(int x, BMPExtraInfo* extraInfo)
 bool crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
            int32_t w, int32_t h, BMPImage* result,
            BMPExtraInfo* resultExtraInfo) {
+    result->data = NULL;
+
     if (!checkCoords(&image->header, x, y, w, h))
         return false;
     result->header = image->header;
@@ -202,7 +203,7 @@ bool crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
 
 bool rotate(BMPImage* image,
              BMPImage* result, BMPExtraInfo* resultExtraInfo) {
-
+    result->data = NULL;
 
     int w = image->header.heightPx;
     int h = image->header.widthPx;
@@ -220,6 +221,7 @@ bool rotate(BMPImage* image,
     if (result->data == NULL) {
         return false;
     }
+    
     int padding = resultExtraInfo->padding;
 
     int index = 0;
