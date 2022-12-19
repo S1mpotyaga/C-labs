@@ -8,13 +8,14 @@ bool checkAtoi(int32_t value, char* str) {
 }
 
 int main(int argc, char** argv) {
+	const int FAILED_MAIN = -1;
 	const int ARGC = 8;
 	const char* MODE = "crop-rotate";
 
 
 	if (argc != ARGC) {
 		printf("Incorrect count of params: %i, but needs %i\n", argc, ARGC);
-		return 0;
+		return FAILED_MAIN;
 	}
 	char* mode = argv[1];
 	char* fileIn = argv[2];
@@ -30,13 +31,17 @@ int main(int argc, char** argv) {
 		!checkAtoi(w, argv[6]) ||
 		!checkAtoi(h, argv[7]))
 	{
-		printf("Incorrect coords\n");
-		return 0;
+		#ifdef LOCAL
+			printf("Incorrect coords\n");
+		#endif
+		return FAILED_MAIN;
 	}
 
 	if (strcmp(mode, MODE) != 0) {
-		printf("Incorrect mode: %s, but needs %s\n", mode, MODE);
-		return 0;
+		#ifdef LOCAL
+			printf("Incorrect mode: %s, but needs %s\n", mode, MODE);
+		#endif
+		return FAILED_MAIN;
 	}
 
 	BMPImage* inputImage = malloc(sizeof(BMPImage));
@@ -44,10 +49,10 @@ int main(int argc, char** argv) {
 
 	char* error = NULL;
 
-	error = load_bmp(fileIn, inputImage, inputExtraInfo);
-	if (error != NULL) {
-		printf("%s\n", error);
-		return 0;
+	if (!load_bmp(fileIn, inputImage, inputExtraInfo)) {
+		printf("error\n");
+		freeBmp(inputImage, inputExtraInfo);
+		return FAILED_MAIN;
 	}
 
 	y = inputImage->header.heightPx - y - h;
@@ -55,14 +60,17 @@ int main(int argc, char** argv) {
 	BMPImage* croppedImage = malloc(sizeof(BMPImage));
 	BMPExtraInfo* croppedExtraInfo = malloc(sizeof(BMPExtraInfo));
 
+
 	error = crop(inputImage, inputExtraInfo, x, y, w, h, croppedImage, croppedExtraInfo);
 
 	if (error != NULL) {
-		printf("%s\n", error);
-
+		#ifdef LOCAL
+			printf("crop error: %s\n", error);
+		#endif
 		freeBmp(inputImage, inputExtraInfo);
 		freeBmp(croppedImage, croppedExtraInfo);
-		return 0;
+		free(error);
+		return FAILED_MAIN;
 	}
 
 	BMPImage* rotatedImage = malloc(sizeof(BMPImage));
@@ -70,15 +78,24 @@ int main(int argc, char** argv) {
 
 	error = rotate(croppedImage, rotatedImage, rotatedExtraInfo);
 	if (error != NULL) {
-		printf("%s\n", error);
-
+		#ifdef LOCAL
+			printf("rotate error: %s\n", error);
+		#endif
 		freeBmp(inputImage, inputExtraInfo);
 		freeBmp(croppedImage, croppedExtraInfo);
 		freeBmp(rotatedImage, rotatedExtraInfo);
-		return 0;
+		free(error);
+		free(fileIn);
+		free(fileOut);
+		return FAILED_MAIN;
 	}
 
-	save_bmp(fileOut, rotatedImage);
+	if (!save_bmp(fileOut, rotatedImage)) {
+		freeBmp(inputImage, inputExtraInfo);
+		freeBmp(croppedImage, croppedExtraInfo);
+		freeBmp(rotatedImage, rotatedExtraInfo);
+		return FAILED_MAIN;
+	}
 
 	freeBmp(inputImage, inputExtraInfo);
 	freeBmp(croppedImage, croppedExtraInfo);

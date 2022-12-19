@@ -48,7 +48,7 @@ typedef struct BMPextraInfo BMPExtraInfo;
 
 
  
-char* load_bmp(char *filename, BMPImage* image, BMPExtraInfo* info);
+bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* info);
  
 char* crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
            int32_t w, int32_t h, BMPImage* result,
@@ -57,7 +57,7 @@ char* crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
 char* rotate(BMPImage* image,
              BMPImage* result, BMPExtraInfo* resultExtraInfo);
  
-char* save_bmp(char* filename, BMPImage* image);
+bool save_bmp(char* filename, BMPImage* image);
 
 void freeBmp(BMPImage* image, BMPExtraInfo* extraInfo);
  

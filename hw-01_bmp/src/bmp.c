@@ -60,17 +60,15 @@ void calcExtraInfo(BMPHeader* header, long fileSize, BMPExtraInfo* extraInfo) {
     calcFileSizeBytes(fileSize, extraInfo);
 }
 
-char* readHeader(FILE* file, BMPHeader* header) {
-    char* error = NULL;
+bool readHeader(FILE* file, BMPHeader* header) {
     rewind(file);
     if (fread(header, sizeof(BMPHeader), 1, file) != 1) 
-        error = "Can't read header of the file";
-    return error;
+        return false;
+    return true;
 }
 
 bool checkHeader(BMPHeader* header, 
                  BMPExtraInfo* extraInfo) {
-    (void)(extraInfo);
     return
         header->type == MAGIC_VALUE
         && header->offsetImageData == BMP_HEADER_SIZE
@@ -88,48 +86,60 @@ bool checkHeader(BMPHeader* header,
 
 
  
-char* load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
-    char* error = NULL;
+bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
 
     FILE* file = fopen(filename, "rb");
-    if (file == NULL) error = "Can't find input file";
-    if (error != NULL) return error;
+    
+    if (file == NULL) {
+        fclose(file);
+        return false;
+    }
 
-    error = readHeader(file, &(image->header));
-    if (error != NULL) return error;
+    if (!readHeader(file, &(image->header))) {
+        fclose(file);
+        return false;
+    }
+
 
     calcExtraInfo(&image->header, getFileSize(file), extraInfo);
     
     if (!checkHeader(&image->header, extraInfo)) {
-        error = "Failed check header";
-        printf("%u\n", image->header.offsetImageData);
+        fclose(file);
+        return false;
     }
-    if (error != NULL) return error;
 
     // Allocate memory for image data
     image->data = malloc(sizeof(*image->data) * image->header.imageSizeBytes);
-    if (image->data == NULL) error = "Not enought memory for data";
-    if (error != NULL) return error;
-    
+    if (image->data == NULL) {
+        fclose(file);
+        return false;
+    }
     // Read image data
-    if(fread(image->data, image->header.imageSizeBytes, 1, file) != 1)
-        error = "Can't read data";
-    if (error != NULL) return error;
-
-    return error;
+    if(fread(image->data, image->header.imageSizeBytes, 1, file) != 1) {
+        fclose(file);
+        return false;
+    }
+    
+    fclose(file);
+    return true;
 }
 
-char* save_bmp(char* filename, BMPImage* image) {
+bool save_bmp(char* filename, BMPImage* image) {
     FILE* out = fopen(filename, "wb");
 
     rewind(out);
-    if (fwrite(&(image->header), sizeof(BMPHeader), 1, out) != 1)
-        return "Can't write header of image";
+    if (fwrite(&(image->header), sizeof(BMPHeader), 1, out) != 1) {
+        fclose(out);
+        return false;
+    }
 
-    if (fwrite(image->data, image->header.imageSizeBytes, 1, out) != 1) 
-        return "Can't write data of file";
+    if (fwrite(image->data, image->header.imageSizeBytes, 1, out) != 1) {
+        fclose(out);
+        return false;
+    }
 
-    return NULL;
+    fclose(out);
+    return true;
 }
 
 bool checkCoords(BMPHeader* header, int32_t x, int32_t y,
