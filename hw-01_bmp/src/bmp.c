@@ -154,11 +154,11 @@ int getPositionXRow(int x, BMPExtraInfo* extraInfo)
     return x * extraInfo->bytesPerPixel;
 }
 
-char* crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
+bool crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
            int32_t w, int32_t h, BMPImage* result,
            BMPExtraInfo* resultExtraInfo) {
     if (!checkCoords(&image->header, x, y, w, h))
-        return "Incorrect coords";
+        return false;
     result->header = image->header;
     result->header.widthPx = w;
     result->header.heightPx = h;
@@ -172,8 +172,7 @@ char* crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
 
     result->data = malloc(sizeof(char) * result->header.imageSizeBytes);
     if (result->data == NULL) {
-        free(resultExtraInfo);
-        return "Can't alloc memory for datd of new file";
+        return false;
     }
 
     int posY = y * extraInfo->rowSizeBytes;
@@ -198,10 +197,10 @@ char* crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
         posXRow = getPositionXRow(x, extraInfo);
     }
 
-    return NULL;
+    return true;
 }
 
-char* rotate(BMPImage* image,
+bool rotate(BMPImage* image,
              BMPImage* result, BMPExtraInfo* resultExtraInfo) {
 
 
@@ -219,8 +218,7 @@ char* rotate(BMPImage* image,
 
     result->data = malloc(sizeof(char) * result->header.imageSizeBytes);
     if (result->data == NULL) {
-        free(resultExtraInfo);
-        return "Can't alloc memory for datd of new file";
+        return false;
     }
     int padding = resultExtraInfo->padding;
 
@@ -250,7 +248,7 @@ char* rotate(BMPImage* image,
         }
     }
 
-    return NULL;
+    return true;
 }
 
 void freeBmp(BMPImage* image, BMPExtraInfo* extraInfo) {
