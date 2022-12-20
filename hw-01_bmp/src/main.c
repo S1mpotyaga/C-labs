@@ -31,16 +31,10 @@ int main(int argc, char** argv) {
 		!checkAtoi(w, argv[6]) ||
 		!checkAtoi(h, argv[7]))
 	{
-		#ifdef LOCAL
-			printf("Incorrect coords\n");
-		#endif
 		return FAILED_MAIN;
 	}
 
 	if (strcmp(mode, MODE) != 0) {
-		#ifdef LOCAL
-			printf("Incorrect mode: %s, but needs %s\n", mode, MODE);
-		#endif
 		return FAILED_MAIN;
 	}
 
@@ -48,7 +42,6 @@ int main(int argc, char** argv) {
 	BMPExtraInfo* inputExtraInfo = malloc(sizeof(BMPExtraInfo));
 
 	if (!load_bmp(fileIn, inputImage, inputExtraInfo)) {
-		printf("error\n");
 		freeBmp(inputImage, inputExtraInfo);
 		return FAILED_MAIN;
 	}
@@ -61,9 +54,6 @@ int main(int argc, char** argv) {
 
 	if (!crop(inputImage, inputExtraInfo, x, y, w, h, 
 			  croppedImage, croppedExtraInfo)) {
-		#ifdef LOCAL
-			printf("crop error\n");
-		#endif
 		freeBmp(inputImage, inputExtraInfo);
 		freeBmp(croppedImage, croppedExtraInfo);
 		return FAILED_MAIN;
@@ -72,10 +62,7 @@ int main(int argc, char** argv) {
 	BMPImage* rotatedImage = malloc(sizeof(BMPImage));
 	BMPExtraInfo* rotatedExtraInfo = malloc(sizeof(BMPExtraInfo));
 
-	if (!rotate(croppedImage, rotatedImage, rotatedExtraInfo)) {
-		#ifdef LOCAL
-			printf("rotate error\n");
-		#endif
+	if (!rotate(croppedImage, croppedExtraInfo, rotatedImage, rotatedExtraInfo)) {
 		freeBmp(inputImage, inputExtraInfo);
 		freeBmp(croppedImage, croppedExtraInfo);
 		freeBmp(rotatedImage, rotatedExtraInfo);
@@ -83,9 +70,6 @@ int main(int argc, char** argv) {
 	}
 
 	if (!save_bmp(fileOut, rotatedImage)) {
-		#ifdef LOCAL
-			printf("save error\n");
-		#endif
 		freeBmp(inputImage, inputExtraInfo);
 		freeBmp(croppedImage, croppedExtraInfo);
 		freeBmp(rotatedImage, rotatedExtraInfo);

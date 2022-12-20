@@ -109,7 +109,7 @@ bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
         return false;
     }
 
-    image->data = malloc(sizeof(*image->data) * image->header.imageSizeBytes);
+    image->data = malloc(image->header.imageSizeBytes);
     if (image->data == NULL) {
         return false;
     }
@@ -126,7 +126,6 @@ bool load_bmp(char *filename, BMPImage* image, BMPExtraInfo* extraInfo) {
 bool save_bmp(char* filename, BMPImage* image) {
     FILE* out = fopen(filename, "wb");
 
-    rewind(out);
     if (fwrite(&(image->header), sizeof(BMPHeader), 1, out) != 1) {
         fclose(out);
         return false;
@@ -143,7 +142,7 @@ bool save_bmp(char* filename, BMPImage* image) {
 
 bool checkCoords(BMPHeader* header, int32_t x, int32_t y,
      int32_t w, int32_t h) {
-    return 0 <= x && 0 <= y && 
+    return 0 <= x && 0 <= y && w >= 0 && h >= 0 &&
            x + w <= header->widthPx && 
            y + h <= header->heightPx;
 }
@@ -201,7 +200,7 @@ bool crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
     return true;
 }
 
-bool rotate(BMPImage* image,
+bool rotate(BMPImage* image, BMPExtraInfo* imageExtraInfo,
              BMPImage* result, BMPExtraInfo* resultExtraInfo) {
     result->data = NULL;
 
@@ -217,8 +216,9 @@ bool rotate(BMPImage* image,
     result->header.imageSizeBytes = resultExtraInfo->imageSizeBytes;
     result->header.fileSizeBytes = BMP_HEADER_SIZE + resultExtraInfo->imageSizeBytes;
 
-    result->data = malloc(sizeof(char) * result->header.imageSizeBytes);
-    if (result->data == NULL) {
+    calcFileSizeBytes(result->header.fileSizeBytes, resultExtraInfo);
+
+    result->data = malloc(sizeof(char) * result->header.imageSizeBytes);    if (result->data == NULL) {
         return false;
     }
     
@@ -230,20 +230,16 @@ bool rotate(BMPImage* image,
 
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
-            posY = j * resultExtraInfo->rowSizeBytes;
-            posX = getPositionXRow(h - i - 1, resultExtraInfo);
+            posY = j * imageExtraInfo->rowSizeBytes;
+            posX = getPositionXRow(h - i - 1, imageExtraInfo);
             for (int k = 0; k < 3; k++) {
+
+                // printf("posY %i posX %i size %i\n", posY, posX, image->header.imageSizeBytes);
                 result->data[index] = image->data[posY + posX];
                 index++;
                 posX++;
             }
         }
-    }
-
-    index = 0;
-    for (int i = 0; i < w; i++) {
-        index = i * (3 * h + padding) + 3 * h;
-
         for (int l = 0; l < padding; l++) {
             result->data[index] = 0x00;
             index++;

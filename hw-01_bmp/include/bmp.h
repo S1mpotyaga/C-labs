@@ -54,7 +54,7 @@ bool crop(BMPImage* image, BMPExtraInfo* extraInfo, int32_t x, int32_t y,
            int32_t w, int32_t h, BMPImage* result,
            BMPExtraInfo* resultExtraInfo);
  
-bool rotate(BMPImage* image,
+bool rotate(BMPImage* image, BMPExtraInfo* imageExtraInfo,
              BMPImage* result, BMPExtraInfo* resultExtraInfo);
  
 bool save_bmp(char* filename, BMPImage* image);
