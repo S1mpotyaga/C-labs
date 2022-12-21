@@ -256,13 +256,14 @@ bool copyBMP(BMPImage* image, BMPExtraInfo* imageExtraInfo,
     calcAllAboutHeader(&result->header, resultExtraInfo);
     calcFileSizeBytes(imageExtraInfo->fileSizeBytes, resultExtraInfo);
 
-    int len = result->header.fileSizeBytes;
+    int len = result->header.imageSizeBytes;
 
     result->data = malloc(sizeof(char) * len);
     if (image->data == NULL) return false;
 
-    for (int i = 0; i < len; i++) result->data[i] = image->data[i];
-
+    for (int i = 0; i < len; i++) {
+        result->data[i] = image->data[i];
+    }
     return true;
 }
 
