@@ -10,7 +10,7 @@ all: prepare compile link
 prepare:
 	if [ ! -d "obj" ]; then mkdir obj; fi
 
-compile: obj/bmp.o obj/main.o
+compile: obj/bmp.o obj/main.o obj/stego.o
 
 obj/bmp.o: src/bmp.c
 	$(CC) $(C_FLAGS) $(INCLUDES) src/bmp.c -o obj/bmp.o
@@ -18,10 +18,13 @@ obj/bmp.o: src/bmp.c
 obj/main.o: src/main.c
 	$(CC) $(C_FLAGS) $(INCLUDES) src/main.c -o obj/main.o
 
+obj/stego.o: src/stego.c
+	$(CC) $(C_FLAGS) $(INCLUDES) src/stego.c -o obj/stego.o
+
 link: $(EXECUTABLE)
 
-$(EXECUTABLE): obj/bmp.o obj/main.o
-	$(CC) obj/bmp.o obj/main.o -o $(EXECUTABLE)
+$(EXECUTABLE): obj/bmp.o obj/main.o obj/stego.o
+	$(CC) obj/*.o -o $(EXECUTABLE)
 
 clean:
 	rm -rf obj/*.o $(EXECUTABLE)

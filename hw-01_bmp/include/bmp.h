@@ -60,4 +60,19 @@ bool rotate(BMPImage* image, BMPExtraInfo* imageExtraInfo,
 bool save_bmp(char* filename, BMPImage* image);
 
 void freeBmp(BMPImage* image, BMPExtraInfo* extraInfo);
+
+bool copyBMP(BMPImage* image, BMPExtraInfo* imageExtraInfo,
+             BMPImage* result, BMPExtraInfo* resultExtraInfo);
+
+void calcAllAboutHeader(BMPHeader* header, BMPExtraInfo* extraInfo);
+
+void calcExtraInfo(BMPHeader* header, long fileSize, BMPExtraInfo* extraInfo);
+
+void calcFileSizeBytes(long fileSize, BMPExtraInfo* extraInfo);
+
+int getPositionXRow(int x, BMPExtraInfo* extraInfo);
+
+bool checkCoords(BMPHeader* header, int32_t x, int32_t y,
+     int32_t w, int32_t h);
+
  

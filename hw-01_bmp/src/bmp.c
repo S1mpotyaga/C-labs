@@ -1,6 +1,7 @@
 #include "bmp.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAGIC_VALUE 0x4D42 
 #define NUM_COLOR_PLANES 1
@@ -245,6 +246,22 @@ bool rotate(BMPImage* image, BMPExtraInfo* imageExtraInfo,
             index++;
         }
     }
+
+    return true;
+}
+
+bool copyBMP(BMPImage* image, BMPExtraInfo* imageExtraInfo,
+             BMPImage* result, BMPExtraInfo* resultExtraInfo) {
+    result->header = image->header;
+    calcAllAboutHeader(&result->header, resultExtraInfo);
+    calcFileSizeBytes(imageExtraInfo->fileSizeBytes, resultExtraInfo);
+
+    int len = result->header.fileSizeBytes;
+
+    result->data = malloc(sizeof(char) * len);
+    if (image->data == NULL) return false;
+
+    for (int i = 0; i < len; i++) result->data[i] = image->data[i];
 
     return true;
 }
