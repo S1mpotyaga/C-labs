@@ -66,7 +66,7 @@ void MyVector::push_back(int value) {
 
 void MyVector::insert(std::size_t index, int value) {
 	if (_size == _capacity) reserve(_capacity * 2);
-	for (std::size_t i = _size - 1; i >= index; i--) {
+	for (int i = _size - 1; i >= (int)index; i--) {
 		_data[i + 1] = _data[i];
 	}
 	_size++;
