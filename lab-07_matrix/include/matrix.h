@@ -7,6 +7,8 @@
 class Matrix {
 public:
   Matrix(size_t r, size_t c);
+  Matrix(const Matrix& m);
+  ~Matrix();
 
   size_t get_rows() const;
   size_t get_cols() const;
@@ -14,16 +16,19 @@ public:
   int get(size_t i, size_t j) const;
   void print(FILE *f) const;
 
-  friend Matrix operator+(const Matrix& m1, const Matrix& m2);
-  friend Matrix operator-(const Matrix& m1, const Matrix& m2);
-  friend Matrix operator*(const Matrix& m1, const Matrix& m2);
+  Matrix operator+(const Matrix& m) const;
+  Matrix operator-(const Matrix& m) const;
+  Matrix operator*(const Matrix& m) const;
 
   Matrix& operator+=(const Matrix& m);
   Matrix& operator-=(const Matrix& m);
   Matrix& operator*=(const Matrix& m);
 
-  bool operator==(Matrix& m) const;
-  bool operator!=(Matrix& m) const;
+  bool operator==(const Matrix& m) const;
+  bool operator!=(const Matrix& m) const;
+
+
+  Matrix& operator=(const Matrix& m);
 private:
   size_t _rows;
   size_t _cols;

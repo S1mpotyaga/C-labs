@@ -12,10 +12,10 @@ prepare:
 
 compile: obj/matrix.o obj/main.o
 
-obj/matrix.o: src/matrix.cpp
+obj/matrix.o: src/matrix.cpp include/matrix.h
 	$(CC) $(C_FLAGS) $(INCLUDES) src/matrix.cpp -o obj/matrix.o
 
-obj/main.o: src/main.cpp
+obj/main.o: src/main.cpp include/matrix.h
 	$(CC) $(C_FLAGS) $(INCLUDES) src/main.cpp -o obj/main.o
 
 link: $(EXECUTABLE)
