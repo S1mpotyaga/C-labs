@@ -1,26 +1,38 @@
-#pragma once
+#ifndef LAB_08_MATRIX_H
+#define LAB_08_MATRIX_H
 
+#include <cstdio>
 #include <cstddef>
 
 class Matrix {
 public:
-    Matrix(std::size_t r, std::size_t c);
-    ~Matrix();
+  Matrix(size_t r, size_t c);
+  Matrix(const Matrix& m);
+  ~Matrix();
 
-    std::size_t get_rows() const;
-    std::size_t get_cols() const;
-    void set(std::size_t i, std::size_t j, int val);
-    int get(std::size_t i, std::size_t j) const;
+  size_t get_rows() const;
+  size_t get_cols() const;
+  void set(size_t i, size_t j, int val);
+  int get(size_t i, size_t j) const;
+  void print(FILE *f) const;
 
-    bool operator==(const Matrix& that) const;
-    bool operator!=(const Matrix& that) const;
+  Matrix operator+(const Matrix& m) const;
+  Matrix operator-(const Matrix& m) const;
+  Matrix operator*(const Matrix& m) const;
 
+  Matrix& operator+=(const Matrix& m);
+  Matrix& operator-=(const Matrix& m);
+  Matrix& operator*=(const Matrix& m);
+
+  bool operator==(const Matrix& m) const;
+  bool operator!=(const Matrix& m) const;
+
+
+  Matrix& operator=(const Matrix& m);
 private:
-    Matrix(const Matrix& that);
-    Matrix& operator=(const Matrix& that);
-
-private:
-    std::size_t _rows;
-    std::size_t _cols;
-    int **_data;
+  size_t _rows;
+  size_t _cols;
+  int **_data;
 };
+
+#endif
