@@ -15,13 +15,13 @@ Matrix::Matrix(size_t r, size_t c) {
 }
 
 Matrix::Matrix(const Matrix& m) {
-	_rows = m.get_rows();
-	_cols = m.get_cols();
+	_rows = m._rows;
+	_cols = m._cols;
 	_data = new int*[_rows];
 	for (size_t i = 0; i < _rows; i++) {
 		_data[i] = new int[_cols];
 		for (size_t j = 0; j < _cols; j++) {
-			_data[i][j] = m.get(i, j);
+			_data[i][j] = m._data[i][j];
 		}
 	}
 }
@@ -40,13 +40,13 @@ Matrix& Matrix::operator=(const Matrix& m) {
 		delete[] _data[i];
 	delete [] _data;
 
-	_rows = m.get_rows();
-	_cols = m.get_cols();
+	_rows = m._rows;
+	_cols = m._cols;
 	_data = new int*[_rows];	
 	for (size_t i = 0; i < _rows; i++) {
 		_data[i] = new int[_cols];
 		for (size_t j = 0; j < _cols; j++) 
-			_data[i][j] = m.get(i, j);
+			_data[i][j] = m._data[i][j]	;
 	}
 	return *this;
 }
@@ -60,10 +60,10 @@ size_t Matrix::get_cols() const{
 }
 
 void Matrix::set(size_t i, size_t j, int val) {
-	if (i <= _rows && j <= _cols) {
+	if (i < _rows && j < _cols) {
 		_data[i][j] = val;
 	} else {
-		throw std::runtime_error("Indexes out of range");
+		throw std::runtime_error("Indices out of range");
 	}
 }
 
@@ -86,14 +86,14 @@ void Matrix::print(FILE* f) const {
 }
 
 Matrix Matrix::operator+(const Matrix& m) const {
-    if (_rows != m.get_rows() || _cols != m.get_cols()) {
+    if (_rows != m._rows || _cols != m._cols) {
         throw std::runtime_error("Sizes are different");
     }
  
     Matrix answer(_rows, _cols);
     for (size_t i = 0; i < _rows; i++) {
         for (size_t j = 0; j < _cols; j++) {
-            answer.set(i, j, _data[i][j] + m.get(i, j));
+            answer._data[i][j] = _data[i][j] + m._data[i][j];
         }
     }
  
@@ -101,7 +101,7 @@ Matrix Matrix::operator+(const Matrix& m) const {
 }
  
 Matrix Matrix::operator-(const Matrix& m) const {
-    if (_rows != m.get_rows() || _cols != m.get_cols()) {
+    if (_rows != m._rows || _cols != m._cols) {
         throw std::runtime_error("Sizes are different");
     }
  
@@ -116,13 +116,13 @@ Matrix Matrix::operator-(const Matrix& m) const {
 }
  
 Matrix Matrix::operator*(const Matrix& m) const {
-    if (_cols != m.get_rows()) {
+    if (_cols != m._rows) {
         throw std::runtime_error("Sizes do not match");
     }
  
-    Matrix answer(_rows, m.get_cols());
-    for (size_t i = 0; i < answer.get_rows(); i++) {
-        for (size_t j = 0; j < answer.get_cols(); j++) {
+    Matrix answer(_rows, m._cols);
+    for (size_t i = 0; i < answer._rows; i++) {
+        for (size_t j = 0; j < answer._cols; j++) {
             int sum = 0;
             for (size_t t = 0; t < _cols; ++t) {
                 sum += _data[i][t] * m.get(t, j);
@@ -151,7 +151,7 @@ bool Matrix::operator==(const Matrix& m) const {
         return true;
     }
  
-    if (_rows != m.get_rows() || _cols != m.get_cols()) {
+    if (_rows != m._rows || _cols != m._cols) {
         return false;
     }
  

@@ -1,27 +1,25 @@
-.PHONY: all prepare compile link clean
-
-CC = g++ 
-INCLUDES =-Iinclude
-C_FLAGS =-c -std=gnu++17 -Wall -Werror -Wextra 
+.PHONY: all clean
+ 
+CC=g++
+CFLAGS=-std=gnu++17 -c -Wall -Wextra
+INCDIRS=-Iinclude
 EXECUTABLE=lab-07_matrix
+ 
+INCS=$(wildcard include/*.h)
+SRCS=$(wildcard src/*.cpp)
+OBJS=$(patsubst src/%.cpp, obj/%.o, $(SRCS))
+ 
+all: $(EXECUTABLE)
+ 
+obj:
+	mkdir obj
 
-all: prepare compile link
+obj/%.o: src/%.cpp $(INCS) | obj
+	$(CC) $(CFLAGS) $(INCDIRS) $< -o $@
 
-prepare:
-	if [ ! -d "obj" ]; then mkdir obj; fi
-
-compile: obj/matrix.o obj/main.o
-
-obj/matrix.o: src/matrix.cpp include/matrix.h
-	$(CC) $(C_FLAGS) $(INCLUDES) src/matrix.cpp -o obj/matrix.o
-
-obj/main.o: src/main.cpp include/matrix.h
-	$(CC) $(C_FLAGS) $(INCLUDES) src/main.cpp -o obj/main.o
-
-link: $(EXECUTABLE)
-
-$(EXECUTABLE): obj/matrix.o obj/main.o
-	$(CC) obj/*.o -o $(EXECUTABLE)
+$(EXECUTABLE): $(OBJS)
+	$(CC) $(OBJS) -o $(EXECUTABLE)
 
 clean:
-	rm -rf obj/*.o $(EXECUTABLE)
+	rm -rf obj
+	rm $(EXECUTABLE)
