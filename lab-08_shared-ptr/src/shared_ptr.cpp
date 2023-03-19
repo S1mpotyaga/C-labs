@@ -1,4 +1,5 @@
 #include "shared_ptr.hpp"
+#include <iostream>
 
 shared_ptr::Storage::Storage(Matrix* mt) {
 	data_ = mt;
@@ -50,7 +51,6 @@ shared_ptr& shared_ptr::operator=(shared_ptr other) {
 
 shared_ptr::~shared_ptr() {
 	if (storage_ != nullptr) storage_->decr();
-	storage_ = nullptr;
 }
 
 Matrix* shared_ptr::ptr() const{
@@ -63,6 +63,7 @@ bool shared_ptr::isNull() const {
 }
 
 void shared_ptr::reset(Matrix* obj) {
+	if (!isNull() && obj == storage_->getObject()) return;
 	storage_->decr();
 	if (obj == nullptr) {
 		storage_ = nullptr;
@@ -72,10 +73,12 @@ void shared_ptr::reset(Matrix* obj) {
 }
 
 Matrix* shared_ptr::operator->() const {
-	if (storage_ == nullptr) return nullptr;
+	if (storage_ == nullptr)
+		throw std::runtime_error("No matrix by this pointer");
 	return storage_->getObject();
 }
 
 Matrix& shared_ptr::operator*() const {
+	if (isNull()) throw std::runtime_error("No matrix by this pointer");
 	return *(storage_->getObject());
 }
