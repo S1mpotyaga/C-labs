@@ -10,7 +10,6 @@ public:
     void print() const override;
     bool is_inside(int x, int y) const override;
     void zoom(int factor) override;
-    void move(int new_x, int new_y) override;
 protected:
     int radius;
     char* label;

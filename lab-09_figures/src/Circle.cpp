@@ -32,8 +32,3 @@ bool Circle::is_inside(int x, int y) const {
 void Circle::zoom(int factor) {
 	radius *= factor;
 }
-
-void Circle::move(int new_x, int new_y) {
-	x = new_x;
-	y = new_y;
-}

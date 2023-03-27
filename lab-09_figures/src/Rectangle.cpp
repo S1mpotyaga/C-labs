@@ -18,16 +18,10 @@ void Rectangle::print() const {
 bool Rectangle::is_inside(int x, int y) const {
 	int dx = abs(x - this->x);
 	int dy = abs(y - this->y);
-	return dx * 2 <= height && dy * 2 <= width;
+	return dx * 2 <= width && dy * 2 <= height;
 }
 
 void Rectangle::zoom(int factor) {
 	height *= factor;
 	width *= factor;
 }
-
-void Rectangle::move(int new_x, int new_y) {
-	x = new_x;
-	y = new_y;
-}
-    
