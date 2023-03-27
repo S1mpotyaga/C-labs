@@ -6,15 +6,12 @@
 
 Circle::Circle(int id, int x, int y, int radius, const char* label): Figure(id, x, y) {
 	this->radius = radius;
-	void* it = malloc(strlen(label));
-	if (it == NULL)
-		throw new std::runtime_error("Not enought memory");
-	this->label = (char*) it;
+	this->label = new char[strlen(label) + 1];
 	strcpy(this->label, label);
 }
 
 Circle::~Circle() {
-	free(this->label);
+	delete[] this->label;
 }
 
 void Circle::print() const {

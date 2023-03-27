@@ -9,7 +9,7 @@ Scheme::Scheme(int capacity) {
 
 Scheme::~Scheme() {
 	for (int i = 0; i < real_figures_count_; i++) {
-		delete (figures_[i]);
+		delete figures_[i];
 	}
 	delete[] figures_;
 }
