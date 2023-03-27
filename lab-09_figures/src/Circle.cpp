@@ -26,7 +26,7 @@ int square_dist(int x1, int y1, int x2, int y2) {
 }
 
 bool Circle::is_inside(int x, int y) const {
-	return square_dist(x, y, this->x, this->y) < radius * radius;
+	return square_dist(x, y, this->x, this->y) <= radius * radius;
 }
 
 void Circle::zoom(int factor) {
