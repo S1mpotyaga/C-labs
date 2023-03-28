@@ -2,6 +2,8 @@
 #include <iostream>
 
 Scheme::Scheme(int capacity) {
+	if (capacity < 0)
+		throw new std::runtime_error("Capacity is below zero");
 	capacity_ = capacity;
 	figures_ = new Figure*[capacity_];
 	real_figures_count_ = 0;
@@ -15,6 +17,8 @@ Scheme::~Scheme() {
 }
 
 void Scheme::push_back_figure(Figure* fg) {
+	if (fg == nullptr)
+		throw new std::runtime_error("Figure does not exist");
 	if (real_figures_count_ == capacity_)
 		throw new std::runtime_error(
 			"Can't push back figure: all places are taken"

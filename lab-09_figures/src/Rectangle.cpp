@@ -1,9 +1,11 @@
 #include "Rectangle.hpp"
 #include <cstdio>
 #include <cmath>
-#include "Figure.hpp"
+#include <iostream>
 
 Rectangle::Rectangle(int id, int x, int y, int width, int height): Figure(id, x, y) {
+	if (width < 0 || height < 0)
+		throw new std::runtime_error("Incorrect size"); 
 	this->width = width;
 	this->height = height;
 }
