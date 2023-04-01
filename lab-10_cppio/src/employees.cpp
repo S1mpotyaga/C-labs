@@ -77,7 +77,7 @@ namespace emp {
 	}
 
 	void SalesManager::inputFile(std::ifstream& in) {
-		char* tmp = nullptr;
+		char* tmp = new char[MAX_NAME_LENGHT + 1];
 		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT);
 		_name = std::string(tmp);
 		delete[] tmp;
