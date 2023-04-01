@@ -47,7 +47,7 @@ namespace emp {
 
 	void Developer::inputFile(std::ifstream& in) {
 		char* tmp = new char[MAX_NAME_LENGHT + 1];
-		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT);
+		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT + 1);
 		_name = std::string(tmp);
 		delete[] tmp;
 		in >> bman::read_le_int32(_base_salary);
@@ -78,7 +78,7 @@ namespace emp {
 
 	void SalesManager::inputFile(std::ifstream& in) {
 		char* tmp = new char[MAX_NAME_LENGHT + 1];
-		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT);
+		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT + 1);
 		_name = std::string(tmp);
 		delete[] tmp;
 		in >> bman::read_le_int32(_base_salary);
