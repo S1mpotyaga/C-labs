@@ -15,9 +15,15 @@ namespace emp {
     protected:
         int32_t _base_salary;
         std::string _name;
+
     public:
         virtual ~Employee();
         
+        void printBaseInfo(std::ostream& out) const;
+        void printBaseInfoFile(std::ofstream& out) const;
+
+        void inputBaseInfoFile(std::ifstream& in);
+
         virtual int salary() const = 0;
         
         virtual void print(std::ostream& out) const = 0;

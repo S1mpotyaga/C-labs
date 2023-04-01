@@ -1,5 +1,4 @@
 #include "bin_manip.h"
-#include <fstream>
 #include <cstring>
 
 namespace bman {

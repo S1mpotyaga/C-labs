@@ -25,12 +25,29 @@ namespace emp {
 		return in;
 	}
 
+	void Employee::printBaseInfo(std::ostream& out) const {
+		out << "Name: " << _name << '\n';
+		out << "Base Salary: " << _base_salary << '\n';
+	}
+
+	void Employee::printBaseInfoFile(std::ofstream& out) const {
+		out << bman::write_c_str((char*)_name.c_str());
+		out << bman::write_le_int32(_base_salary);
+	}
+
+	void Employee::inputBaseInfoFile(std::ifstream& in) {
+		char* tmp = new char[MAX_NAME_LENGHT + 1];
+		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT + 1);
+		_name = std::string(tmp);
+		delete[] tmp;
+		in >> bman::read_le_int32(_base_salary);
+	}
+
 	Developer::~Developer() {}
 
 	void Developer::print(std::ostream& out) const {
 		out << "Developer\n";
-		out << "Name: " << _name << '\n';
-		out << "Base Salary: " << _base_salary << '\n';
+		printBaseInfo(out);
 		out << "Has bonus: " << (_has_bonus ? '+' : '-') << '\n'; 
 	}
 
@@ -40,17 +57,12 @@ namespace emp {
 
 	void Developer::printFile(std::ofstream& out) const {
 		out << bman::write_le_int32((int)1);
-		out << bman::write_c_str((char*)_name.c_str());
-		out << bman::write_le_int32(_base_salary);
+		printBaseInfoFile(out);
 		out << bman::write_bool(_has_bonus); 
 	}
 
 	void Developer::inputFile(std::ifstream& in) {
-		char* tmp = new char[MAX_NAME_LENGHT + 1];
-		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT + 1);
-		_name = std::string(tmp);
-		delete[] tmp;
-		in >> bman::read_le_int32(_base_salary);
+		inputBaseInfoFile(in);
 		in >> bman::read_bool(_has_bonus);
 	}
 
@@ -58,8 +70,7 @@ namespace emp {
 
 	void SalesManager::print(std::ostream& out) const {
 		out << "Sales Manager\n";
-		out << "Name: " << _name << '\n';
-		out << "Base Salary: " << _base_salary << '\n';
+		printBaseInfo(out);
 		out << "Sold items: " << _sold_nm<< '\n';
 		out << "Item price: " << _price << '\n'; 
 	}
@@ -70,18 +81,13 @@ namespace emp {
 
 	void SalesManager::printFile(std::ofstream& out) const {
 		out << bman::write_le_int32((int)2);
-		out << bman::write_c_str((char*)_name.c_str());
-		out << bman::write_le_int32(_base_salary);
+		printBaseInfoFile(out);
 		out << bman::write_le_int32(_sold_nm);
 		out << bman::write_le_int32(_price); 
 	}
 
 	void SalesManager::inputFile(std::ifstream& in) {
-		char* tmp = new char[MAX_NAME_LENGHT + 1];
-		in >> bman::read_c_str(tmp, MAX_NAME_LENGHT + 1);
-		_name = std::string(tmp);
-		delete[] tmp;
-		in >> bman::read_le_int32(_base_salary);
+		inputBaseInfoFile(in);
 		in >> bman::read_le_int32(_sold_nm);
 		in >> bman::read_le_int32(_price);
 	}
