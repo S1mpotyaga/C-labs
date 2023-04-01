@@ -9,7 +9,7 @@
 
 namespace emp {
 
-    const size_t MAX_NAME_LENGHT = 100;
+    const size_t MAX_NAME_LENGHT = 200;
 
     class Employee{
     protected:
