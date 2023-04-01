@@ -30,7 +30,7 @@ namespace emp {
 	void Developer::print(std::ostream& out) const {
 		out << "Developer\n";
 		out << "Name: " << _name << '\n';
-		out << "Base salary: " << _base_salary << '\n';
+		out << "Base Salary: " << _base_salary << '\n';
 		out << "Has bonus: " << (_has_bonus ? '+' : '-') << '\n'; 
 	}
 
@@ -59,7 +59,7 @@ namespace emp {
 	void SalesManager::print(std::ostream& out) const {
 		out << "Sales Manager\n";
 		out << "Name: " << _name << '\n';
-		out << "Base salary: " << _base_salary << '\n';
+		out << "Base Salary: " << _base_salary << '\n';
 		out << "Sold items: " << _sold_nm<< '\n';
 		out << "Item price: " << _price << '\n'; 
 	}
