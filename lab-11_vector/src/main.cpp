@@ -1,30 +1,104 @@
 #include <iostream>
+#include <string>
+#include <cassert>
+#include <vector>   
 
 #include "my_vector.hpp"
 
 namespace product {
+    class Product;
+}
 
-class Product {
-public:
-    Product(const char* name, int quantity, double price);
+std::ostream& operator<< (std::ostream& out, const product::Product& p);
 
-private:
-    char *name_;
-    int quantity_;
-    double price_;
-};
+namespace product {
+
+    class Product {
+    public:
+        Product(std::string name, int quantity, double price);
+        bool operator == (Product other);
+
+        friend std::ostream& ::operator<< (std::ostream& out, const Product& p);
+
+    private:
+        std::string name_;
+        int quantity_;
+        double price_;
+    };
+
+    Product::Product(std::string name, int quantity, double price) {
+        name_ = std::move(name);
+        quantity_ = quantity;
+        price_ = price;
+    }
+
+    bool Product::operator == (Product other) {
+        return name_ == other.name_ && quantity_ == other.quantity_ && price_ == other.price_;
+    }
 
 }  // namespace product
 
-int main() {
-	containers::my_vector<int> v;
-	v.push_back(2);
-	const int n{3};
-	v.push_back(n);
-	std::cout << v << std::endl;
+std::ostream& operator<< (std::ostream& out, const product::Product& p) {
+    out << p.name_ << ' ' << p.quantity_ << ' ' << p.price_;
+    return out;
+}
 
-    //test_my_vector<int>(5, 10);
-    //test_my_vector<Product>(Product("asdf", 4, 12.0), Product("qwe", -1, 7.5));
+namespace test{
+    template<typename T>
+    void test_my_vector(std::vector<T> testVector, std::size_t start_cap) {
+        containers::my_vector<T> v;
+        v.reserve(start_cap);
+        std::size_t cap = start_cap;
+        for (std::size_t i = 0; i < testVector.size(); i++) {
+            if (i >= cap) cap *= 2;
+            v.push_back(testVector[i]);
+            assert(v[i] == testVector[i]);
+            assert(v.size() == i + 1);
+            assert(v.capacity() == cap);
+        }
+        v.clear();
+        assert(v.empty());
+        assert(v.size() == 0);
+        assert(v.capacity() == cap);
+    }
+
+    template<typename T>
+    void test_my_vector_default_constructible(std::vector<T> testVector, std::size_t startSize) {
+        containers::my_vector<T> v;
+        v.resize(startSize);
+        for (std::size_t i = 0; i < startSize; i++) assert(v[i] == T());
+        std::size_t cap = 1;
+        while (cap < startSize) cap *= 2;
+        assert(v.capacity() == cap);
+        for (std::size_t i = 0; i < testVector.size(); i++) {
+            if (i + startSize >= cap) cap *= 2;
+            v.push_back(testVector[i]);
+            assert(v[i + startSize] == testVector[i]);
+            assert(v.size() == i + 1 + startSize);
+            assert(v.capacity() == cap);
+        }
+        v.clear();
+        assert(v.empty());
+        assert(v.size() == 0);
+        assert(v.capacity() == cap);   
+    }
+}
+
+int main() {
+	
+    std::vector<int> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+    std::vector<product::Product> v2 = {product::Product("abc", 1, 3.2),
+                                product::Product("sdsdf", 2, 4.56),
+                                product::Product("asd", 0, 1.1)};
+
+    test::test_my_vector(v1, 2);
+    test::test_my_vector(v1, 7);
+    test::test_my_vector(v1, 100);
+    test::test_my_vector(v2, 2);
+    test::test_my_vector(v2, 1);
+    test::test_my_vector_default_constructible(v1, 1);
+    test::test_my_vector_default_constructible(v1, 2);
 
     return 0;
 }
