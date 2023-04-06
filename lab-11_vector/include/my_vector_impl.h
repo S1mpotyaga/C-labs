@@ -18,7 +18,7 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>::my_vector(const my_vector<T>& other) {
-		if (other == *this)
+		if (&other == this)
 			return;
 		capacity_ = other.capacity_;
 		size_ = other.size_;
@@ -32,7 +32,7 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>& my_vector<T>::operator=(const my_vector<T>& other) {
-		if (other == *this) 
+		if (&other == this) 
 			return *this;
 		for (std::size_t i = 0; i < size_; i++) {
 			delete (array_ + i);
