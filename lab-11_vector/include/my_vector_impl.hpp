@@ -111,7 +111,7 @@ namespace containers {
 		if (n > size_) {
 			reserve(n);
 			for (std::size_t i = size_; i < n; i++)
-				array_[i] = T();
+				new (array_ + i) T();
 		} else {
 			if (std::is_destructible<T>::value) {
 				for (std::size_t i = n; i < size_; i++) {
