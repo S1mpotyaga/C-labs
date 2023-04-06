@@ -6,9 +6,10 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>::my_vector(std::size_t n) {
-		capacity_ = n;
+		capacity_ = 1;
+		while (capacity_ < n) capacity_ *= 2;
 		size_ = 0;
-		array_ = (T*)calloc(n, sizeof(T));
+		array_ = (T*)calloc(capacity_, sizeof(T));
 		if (array_ == nullptr)
 			throw std::runtime_error("Not enought memory");
 	}
@@ -78,6 +79,10 @@ namespace containers {
 	template<typename T>
 	void my_vector<T>::reserve(std::size_t n) {
 		if (n <= capacity_) return;
+
+		std::size_t newN = 1;
+		while (newN < n) newN *= 2;
+		n = newN;
 
 		T* tmp = (T*)calloc(n, sizeof(T));
 

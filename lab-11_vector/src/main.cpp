@@ -48,7 +48,8 @@ namespace test{
     void test_my_vector(std::vector<T> testVector, std::size_t start_cap) {
         containers::my_vector<T> v;
         v.reserve(start_cap);
-        std::size_t cap = start_cap;
+        std::size_t cap = 1;
+        while (cap < start_cap) cap *= 2;
         for (std::size_t i = 0; i < testVector.size(); i++) {
             if (i >= cap) cap *= 2;
             v.push_back(testVector[i]);
