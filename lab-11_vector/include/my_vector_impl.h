@@ -40,7 +40,7 @@ namespace containers {
 	template<typename T>
 	void my_vector<T>::deleteSelf() {
 		if (std::is_destructible<T>::value) {
-			for (std::size_t i = 0; i < capacity_; i++) {
+			for (std::size_t i = 0; i < size_; i++) {
 				array_[i].~T();
 			}
 		}
@@ -123,8 +123,8 @@ namespace containers {
 	template<typename T>
 	void my_vector<T>::push_back(T t) {
 		if (size_ == capacity_) reserve(capacity_ * 2);
-		// new (array_ + size_) T(t);
-		array_[size_] = t;
+		new (array_ + size_) T(t);
+		// array_[size_] = t;
 		size_++;
 	}
 
@@ -132,16 +132,16 @@ namespace containers {
 	void my_vector<T>::pop_back() {
 		if (size_ == 0) throw new std::runtime_error("Pop back from empty vector");
 		size_--;
-		// if (std::is_destructible<T>::value)
-		// 	array_[size_].~T();
+		if (std::is_destructible<T>::value)
+			array_[size_].~T();
 	}
 
 	template<typename T>
 	void my_vector<T>::clear() {
-		// if (std::is_destructible<T>::value) {
-		// 	for (std::size_t i = 0; i < size_; i++)
-		// 		array_[i].~T();
-		// }
+		if (std::is_destructible<T>::value) {
+			for (std::size_t i = 0; i < size_; i++)
+				array_[i].~T();
+		}
 		size_ = 0;
 	}
 
