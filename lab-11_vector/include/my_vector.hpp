@@ -40,6 +40,6 @@ private:
 template<typename T>
 std::ostream& operator<< (std::ostream& out, const containers::my_vector<T>& v);  
 
-#include "my_vector_impl.h"
+#include "my_vector_impl.hpp"
 
 #endif  // MY_VECTOR_H_
