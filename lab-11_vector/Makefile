@@ -5,7 +5,7 @@ CFLAGS=-std=gnu++17 -c -Wall -Wextra
 INCDIRS=-Iinclude
 EXECUTABLE=lab-11_vector
  
-INCS=$(wildcard include/*.hpp)
+INCS=$(wildcard include/*.h)
 SRCS=$(wildcard src/*.cpp)
 OBJS=$(patsubst src/%.cpp, obj/%.o, $(SRCS))
  

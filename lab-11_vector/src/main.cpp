@@ -3,7 +3,7 @@
 #include <cassert>
 #include <vector>   
 
-#include "my_vector.hpp"
+#include "my_vector.h"
 
 namespace product {
     class Product;
