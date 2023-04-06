@@ -6,7 +6,7 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>::my_vector(std::size_t n) {
-		size_ = 0;
+		size_ = n;
 		capacity_ = 1;
 		while (capacity_ < n) capacity_ *= 2;
 		array_ = new T[capacity_];
