@@ -10,8 +10,9 @@ namespace containers {
 		capacity_ = 1;
 		while (capacity_ < n) capacity_ *= 2;
 		array_ = (T*)calloc(capacity_, sizeof(T));
+		if (array_ == nullptr) throw std::runtime_error("Not enought memory for init");
 		for (std::size_t i = 0; i < capacity_; i++)
-			array_[i] = T();
+			new (array_ + i) T();
 	}
 
 	template<typename T>
@@ -34,7 +35,7 @@ namespace containers {
 			throw std::runtime_error("Not enought memory");
 		
 		for (std::size_t i = 0; i < size_; i++) 
-			array_[i] = other[i];
+			new (array_ + i) T(other[i]);
 	}
 
 	template<typename T>
@@ -60,7 +61,7 @@ namespace containers {
 			throw std::runtime_error("Not enought memory");
 		
 		for (std::size_t i = 0; i < size_; i++) 
-			array_[i] = other[i];
+			new (array_ + i) T(other[i]);
 		return *this;
 	}
 
@@ -98,7 +99,7 @@ namespace containers {
 			throw new std::runtime_error("Not enought memory for reserve");
 
 		for (std::size_t i = 0; i < size_; i++)
-			tmp[i] = array_[i];
+			new (tmp + i) T(array_[i]);
 
 		deleteSelf();
 		array_ = tmp;
@@ -111,6 +112,12 @@ namespace containers {
 			reserve(n);
 			for (std::size_t i = size_; i < n; i++)
 				array_[i] = T();
+		} else {
+			if (std::is_destructible<T>::value) {
+				for (std::size_t i = n; i < size_; i++) {
+					array_[i].~T();
+				}
+			}
 		}
 		size_ = n;
 	}
