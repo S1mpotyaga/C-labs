@@ -69,10 +69,17 @@ namespace test{
             assert(v.capacity() == cap);
         }
 
+        containers::my_vector<T> u;
+        u = v;
+        assert(v.size() == u.size());
+        assert(v.capacity() == u.capacity());
+
         for (std::size_t i = 0; i < testVector.size(); i++) {
             v.pop_back();
             assert(v.size() == testVector.size() - i - 1);
         }
+
+
     }
 
     template<typename T>
@@ -90,6 +97,12 @@ namespace test{
             assert(v.size() == i + 1 + startSize);
             assert(v.capacity() == cap);
         }
+
+        containers::my_vector<T> u(100);
+        u = v;
+        assert(v.size() == u.size());
+        assert(v.capacity() == u.capacity());
+
         v.clear();
         assert(v.empty());
         assert(v.size() == 0);
