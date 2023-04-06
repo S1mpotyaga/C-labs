@@ -32,13 +32,20 @@ namespace containers {
 	}
 
 	template<typename T>
+	void my_vector<T>::deleteSelf() {
+		if (std::is_destructible<T>::value) {
+			for (std::size_t i = 0; i < capacity_; i++) {
+				array_[i].~T();
+			}
+		}
+		free(array_);
+	}
+
+	template<typename T>
 	my_vector<T>& my_vector<T>::operator=(const my_vector<T>& other) {
 		if (&other == this) 
 			return *this;
-		for (std::size_t i = 0; i < size_; i++) {
-			delete (array_ + i);
-		}
-		free(array_);
+		deleteSelf();
 
 		capacity_ = other.capacity_;
 		size_ = other.size_;
@@ -53,12 +60,7 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>::~my_vector() {
-		if (std::is_destructible<T>::value) {
-			for (std::size_t i = 0; i < capacity_; i++) {
-				array_[i].~T();
-			}
-		}
-		free(array_);
+		deleteSelf();
 	}
 
 	template<typename T>
@@ -92,12 +94,7 @@ namespace containers {
 		for (std::size_t i = 0; i < size_; i++)
 			tmp[i] = array_[i];
 
-		if (std::is_destructible<T>::value) {
-			for (std::size_t i = 0; i < size_; i++) {
-				array_[i].~T();		
-			}
-		}
-		free(array_);
+		deleteSelf();
 		array_ = tmp;
 		capacity_ = n;
 	}

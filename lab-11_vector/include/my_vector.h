@@ -32,6 +32,8 @@ private:
     size_t capacity_;
     size_t size_;
     T* array_;
+
+    void deleteSelf();
 };
 }
 
