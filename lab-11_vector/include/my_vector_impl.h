@@ -6,16 +6,20 @@ namespace containers {
 
 	template<typename T>
 	my_vector<T>::my_vector(std::size_t n) {
+		size_ = 0;
 		capacity_ = 1;
 		while (capacity_ < n) capacity_ *= 2;
-		size_ = 0;
-		array_ = (T*)calloc(capacity_, sizeof(T));
-		if (array_ == nullptr)
-			throw std::runtime_error("Not enought memory");
+		array_ = new T[capacity_];
 	}
 
 	template<typename T>
-	my_vector<T>::my_vector() : my_vector(1) {}
+	my_vector<T>::my_vector() {
+		size_ = 0;
+		capacity_ = 1;
+		array_ = (T*)calloc(capacity_, sizeof(T));
+		if (array_ == nullptr)
+			throw new std::runtime_error("Not enought memory for init");
+	}
 
 	template<typename T>
 	my_vector<T>::my_vector(const my_vector<T>& other) {
