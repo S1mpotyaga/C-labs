@@ -60,6 +60,18 @@ namespace test{
         assert(v.empty());
         assert(v.size() == 0);
         assert(v.capacity() == cap);
+
+        for (int i = testVector.size() - 1; i >= 0; i--) {
+            v.push_back(testVector[i]);
+            assert(v[testVector.size() - i - 1] == testVector[i]);
+            assert(v.size() == testVector.size() - i);
+            assert(v.capacity() == cap);
+        }
+
+        for (std::size_t i = 0; i < testVector.size(); i++) {
+            v.pop_back();
+            assert(v.size() == testVector.size() - i - 1);
+        }
     }
 
     template<typename T>
