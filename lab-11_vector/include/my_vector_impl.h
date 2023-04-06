@@ -9,7 +9,9 @@ namespace containers {
 		size_ = n;
 		capacity_ = 1;
 		while (capacity_ < n) capacity_ *= 2;
-		array_ = new T[capacity_];
+		array_ = calloc(n, sizeof(T));
+		for (std::size_t i = 0; i < n; i++)
+			array_[i] = T();
 	}
 
 	template<typename T>
