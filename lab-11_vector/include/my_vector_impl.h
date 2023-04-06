@@ -123,7 +123,8 @@ namespace containers {
 	template<typename T>
 	void my_vector<T>::push_back(T t) {
 		if (size_ == capacity_) reserve(capacity_ * 2);
-		array_[size_++] = t;
+		new (array_ + size_) T(t);
+		size_++;
 	}
 
 	template<typename T>
