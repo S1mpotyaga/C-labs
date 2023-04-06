@@ -131,10 +131,16 @@ namespace containers {
 	void my_vector<T>::pop_back() {
 		if (size_ == 0) throw new std::runtime_error("Pop back from empty vector");
 		size_--;
+		if (std::is_destructible<T>::value)
+			array_[size_].~T();
 	}
 
 	template<typename T>
 	void my_vector<T>::clear() {
+		if (std::is_destructible<T>::value) {
+			for (std::size_t i = 0; i < size_; i++)
+				array_[i].~T();
+		}
 		size_ = 0;
 	}
 
