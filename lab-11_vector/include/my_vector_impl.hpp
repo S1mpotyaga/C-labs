@@ -11,7 +11,7 @@ namespace containers {
 		while (capacity_ < n) capacity_ *= 2;
 		array_ = (T*)calloc(capacity_, sizeof(T));
 		if (array_ == nullptr) throw std::runtime_error("Not enought memory for init");
-		for (std::size_t i = 0; i < capacity_; i++)
+		for (std::size_t i = 0; i < n; i++)
 			new (array_ + i) T();
 	}
 
