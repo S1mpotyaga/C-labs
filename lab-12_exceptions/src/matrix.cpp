@@ -6,9 +6,20 @@
 Matrix::Matrix(size_t r, size_t c) {
 	_rows = r;
 	_cols = c;
-	_data = new int*[_rows];
+	MatrixException memoryException("Unable to allocate memory.");
+	try{
+		_data = new int*[_rows];
+	} catch (const std::exception& e) {
+		throw memoryException;
+	}
 	for (size_t i = 0; i < _rows; i++) {
-		_data[i] = new int[_cols];
+		try {
+			_data[i] = new int[_cols];
+		} catch (const std::exception &e) {
+			for (size_t j = 0; j < i; j++) delete[] _data[i];
+			delete[] _data;
+			throw memoryException;
+		}
 		for (size_t j = 0; j < _cols; j++) {
 			_data[i][j] = 0;
 		}
@@ -18,9 +29,22 @@ Matrix::Matrix(size_t r, size_t c) {
 Matrix::Matrix(const Matrix& m) {
 	_rows = m._rows;
 	_cols = m._cols;
-	_data = new int*[_rows];
+	
+	MatrixException memoryException("Unable to allocate memory.");
+	
+	try {
+		_data = new int*[_rows];
+	} catch (const std::exception& e) {
+		throw memoryException;
+	}
 	for (size_t i = 0; i < _rows; i++) {
-		_data[i] = new int[_cols];
+		try {
+			_data[i] = new int[_cols];
+		} catch (const std::exception &e) {
+			for (size_t j = 0; j < i; j++) delete[] _data[i];
+			delete[] _data;
+			throw memoryException;
+		}
 		for (size_t j = 0; j < _cols; j++) {
 			_data[i][j] = m._data[i][j];
 		}
@@ -95,16 +119,28 @@ void Matrix::load(std::string s) {
 
 Matrix& Matrix::operator=(const Matrix& m) {
 	if (*this == m) return *this;
-	
+
 	for (size_t i = 0; i < _rows; i++) 
 		delete[] _data[i];
 	delete [] _data;
 
+	MatrixException memoryException("Unable to allocate memory.");
+
 	_rows = m._rows;
 	_cols = m._cols;
-	_data = new int*[_rows];	
+	try {
+		_data = new int*[_rows];
+	} catch (const std::exception& e) {
+		throw memoryException;
+	}	
 	for (size_t i = 0; i < _rows; i++) {
-		_data[i] = new int[_cols];
+		try {
+			_data[i] = new int[_cols];
+		} catch (const std::exception &e) {
+			for (size_t j = 0; j < i; j++) delete[] _data[i];
+			delete[] _data;
+			throw memoryException;
+		}
 		for (size_t j = 0; j < _cols; j++) 
 			_data[i][j] = m._data[i][j]	;
 	}
