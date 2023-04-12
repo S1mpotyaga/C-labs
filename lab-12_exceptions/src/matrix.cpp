@@ -75,11 +75,9 @@ void Matrix::load(std::string s) {
 			in.close();
 			throw memoryException; 
 		}
-	}
-	for (size_t i = 0; i < new_r; i++) {
 		for (size_t j = 0; j < new_c; j++) {
 			if (!(in >> newData[i][j])) {
-				for (size_t k = 0; k < new_r; k++) delete[] newData[k];
+				for (size_t k = 0; k <= i; k++) delete[] newData[k];
 				delete[] newData;
 				in.close();
 				throw formatException;
