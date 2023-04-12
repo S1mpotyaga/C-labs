@@ -26,7 +26,7 @@ int main() {
 			std::cin >> fileName;
 			try {
 				matrices[i].load(fileName);
-			} catch(const MatrixException& e) {
+			} catch(const std::exception& e) {
 				std::cout << e.what() << '\n';
 			}
 		} else if (command == "print") {
