@@ -43,7 +43,7 @@ void Matrix::load(std::string s) {
 	if (!in.good())
 		throw MatrixException("LOAD: unable to open file.");
 
-	MatrixException formatException("LOAD: invalid file format");
+	MatrixException formatException("LOAD: invalid file format.");
 	MatrixException memoryException("Unable to allocate memory.");
 	
 	size_t new_r = -1;
@@ -62,13 +62,14 @@ void Matrix::load(std::string s) {
 	try {
 		newData = new int*[new_r];
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception& e) {	
+		in.close();
 		throw memoryException;
 	}
 	for (size_t i = 0; i < new_r; i++) {
 		try {
 			newData[i] = new int[new_c];
-		} catch (const std::exception& e) {
+		} catch (const std::exception& e) {	
 			for (size_t j = 0; j < i; j++) delete[] newData[j];
 			delete[] newData;
 			in.close();
@@ -129,7 +130,7 @@ void Matrix::set(size_t i, size_t j, int val) {
 }
 
 int Matrix::get(int i, int j) const {
-	if (0 <= i && i <= (int)_rows && 0 <= j && j <= (int)_cols) {
+	if (0 <= i && i < (int)_rows && 0 <= j && j < (int)_cols) {
 		return _data[i][j];
 	}
 	throw MatrixException("ACCESS: bad index.");
