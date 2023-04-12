@@ -26,8 +26,10 @@ int main() {
 			std::cin >> fileName;
 			try {
 				matrices[i].load(fileName);
-			} catch(const std::exception& e) {
+			} catch(const MatrixException& e) {
 				std::cout << e.what() << '\n';
+			} catch (const std::bad_alloc& e) {
+				std::cout << "Unable to allocate memory.\n"; 
 			}
 		} else if (command == "print") {
 			int i = inputReq();
