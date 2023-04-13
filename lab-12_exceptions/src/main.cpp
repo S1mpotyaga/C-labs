@@ -17,7 +17,7 @@ int main() {
 
 	std::string command;
 
-	Matrix* matrices = new Matrix[N];
+	Matrix matrices[N];
 
 	while (std::cin >> command) {
 		if (command == "load") {
@@ -63,8 +63,6 @@ int main() {
 			break;
 		}
 	}
-
-	delete[] matrices;
 
 	return 0;
 }

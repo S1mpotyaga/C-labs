@@ -1,7 +1,7 @@
 .PHONY: all clean
  
 CC=g++
-CFLAGS=-std=gnu++17 -c -Wall -Wextra
+CFLAGS=-std=gnu++17 -c -Wall -Wextra -Werror
 INCDIRS=-Iinclude
 EXECUTABLE=lab-12_exceptions
  

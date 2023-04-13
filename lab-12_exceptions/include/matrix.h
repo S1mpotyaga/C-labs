@@ -6,6 +6,7 @@ class Matrix {
 public:
     Matrix(size_t r = 0, size_t c = 0);
     Matrix(const Matrix& m);
+    friend void swap(Matrix& m1, Matrix& m2);
 
     void deleteSelf();
 
@@ -32,7 +33,7 @@ public:
 
 
 
-    Matrix& operator=(const Matrix& m);
+    Matrix& operator=(Matrix m);
 private:
     size_t _rows;
     size_t _cols;
