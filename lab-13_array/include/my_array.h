@@ -81,8 +81,8 @@ public:
     my_bool(uint8_t* data, uint8_t ptr);
 
     operator bool () const;
-    const my_bool& operator= (const my_bool& other);
-    const my_bool& operator= (bool b);
+    my_bool& operator= (const my_bool& other);
+    my_bool& operator= (bool b);
 private:
     uint8_t* data_;
     uint8_t ptr_;
@@ -104,11 +104,11 @@ my_bool::operator bool () const{
     return (((*data_) >> ptr_) & 1);
 }
 
-const my_bool& my_bool::operator= (const my_bool& other) {
+my_bool& my_bool::operator= (const my_bool& other) {
     return (*this = other.value());
 }
 
-const my_bool& my_bool::operator= (bool b) {
+my_bool& my_bool::operator= (bool b) {
     (*data_) ^= ((value() ^ b) >> (ptr_));
     return *this;
 }

@@ -42,6 +42,15 @@ class NonCopyable {
     NonCopyable& operator=(const NonCopyable);
 };
 
+template<std::size_t N>
+void test_bool() {
+    my_array<bool, N> a;
+    bool value = true;
+    a[0] = value;
+    a[1] = a[0];
+    (a[0] = a[1]) = value;
+}
+
 int main() {
     test_core<int, 10>();
     test_core<bool, 10>();
@@ -49,4 +58,5 @@ int main() {
 
     test_assign<int, 10>();
     test_assign<bool, 10>();
+    test_bool<10>();
 }
