@@ -41,3 +41,12 @@ class NonCopyable {
     NonCopyable(const NonCopyable&);
     NonCopyable& operator=(const NonCopyable);
 };
+
+int main() {
+    test_core<int, 10>();
+    test_core<bool, 10>();
+    test_core<NonCopyable, 10>();
+
+    test_assign<int, 10>();
+    test_assign<bool, 10>();
+}
