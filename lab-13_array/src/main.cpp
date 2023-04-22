@@ -1,5 +1,6 @@
 #include "my_array.h"
 #include <cstddef>
+#include <cassert>
 
 namespace mainNamespace {
 
@@ -45,10 +46,11 @@ class NonCopyable {
 template<std::size_t N>
 void test_bool() {
     my_array<bool, N> a;
-    bool value = true;
-    a[0] = value;
+    a.fill(false);
+    a[0] = true;
     a[1] = a[0];
-    (a[0] = a[1]) = value;
+    assert(a[0] == true);
+    assert(a[1] == true);
 }
 
 int main() {

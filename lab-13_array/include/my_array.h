@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdlib.h>
 #include <stdexcept>
+#include <iostream>
 
 namespace lab_13 {
 
@@ -78,19 +79,19 @@ const uint8_t BLOCK_SIZE = 8;
 
 class my_bool {
 public:
-    my_bool(uint8_t* data, uint8_t ptr);
+    my_bool(uint8_t* data, int ptr);
 
     operator bool () const;
     my_bool& operator= (const my_bool& other);
     my_bool& operator= (bool b);
 private:
     uint8_t* data_;
-    uint8_t ptr_;
+    int ptr_;
 
     bool value() const;
 };
 
-my_bool::my_bool(uint8_t* data, uint8_t ptr) {
+my_bool::my_bool(uint8_t* data, int ptr) {
     data_ = data;
     ptr_ = ptr;
 }
@@ -105,11 +106,12 @@ my_bool::operator bool () const{
 }
 
 my_bool& my_bool::operator= (const my_bool& other) {
-    return (*this = other.value());
+    *this = other.value();
+    return *this;
 }
 
-my_bool& my_bool::operator= (bool b) {
-    (*data_) ^= ((value() ^ b) >> (ptr_));
+my_bool& my_bool::operator= (bool b) { 
+    (*data_) ^= ((uint32_t)(value() ^ b) << (ptr_));
     return *this;
 }
 
@@ -139,23 +141,23 @@ my_array<bool, N>::my_array() {
 template<std::size_t N>
 my_bool my_array<bool, N>::at(std::size_t i) {
     if (i >= N) throw std::out_of_range("List index out of range");
-    return my_bool(array_ + (i / BLOCK_SIZE), (i & (BLOCK_SIZE - 1)));
+    return my_bool(array_ + (i / BLOCK_SIZE), i % BLOCK_SIZE);
 }
 
 template<std::size_t N>
 bool my_array<bool, N>::at(std::size_t i) const {
     if (i >= N) throw std::out_of_range("List index out of range");
-    return ((array_[i / BLOCK_SIZE] >> (i & (BLOCK_SIZE - 1))) & 1);
+    return ((array_[i / BLOCK_SIZE] >> (i % BLOCK_SIZE)) & 1);
 }
 
 template<std::size_t N>
 my_bool my_array<bool, N>::operator[](std::size_t i) {
-    return my_bool(array_ + (i / BLOCK_SIZE), (i & (BLOCK_SIZE - 1)));
+    return my_bool(array_ + (i / BLOCK_SIZE), (i % BLOCK_SIZE));
 }
 
 template<std::size_t N>
 bool my_array<bool, N>::operator[](std::size_t i) const {
-    return ((array_[i / BLOCK_SIZE] >> (i & (BLOCK_SIZE - 1))) & 1);
+    return ((array_[i / BLOCK_SIZE] >> (i % BLOCK_SIZE)) & 1);
 }
 
 template<std::size_t N>
