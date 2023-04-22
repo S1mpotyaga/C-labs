@@ -84,12 +84,23 @@ public:
     operator bool () const;
     my_bool& operator= (const my_bool& other);
     my_bool& operator= (bool b);
+    bool value() const;
 private:
     uint8_t* data_;
     int ptr_;
-
-    bool value() const;
 };
+
+std::ostream& operator<< (std::ostream& out, const my_bool & b) {
+    out << b.value();
+    return out;
+}
+
+std::istream& operator<< (std::istream& in, my_bool & b) {
+    bool tmp;
+    in >> tmp;
+    b = tmp;
+    return in;
+}
 
 my_bool::my_bool(uint8_t* data, int ptr) {
     data_ = data;
