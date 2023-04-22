@@ -22,8 +22,6 @@ public:
     std::size_t size() const;
 
     void fill(const T& val);
-
-    void operator= (const my_array<T, N>& from);
 private:
     T array_[N];
 };
@@ -71,13 +69,6 @@ template<typename T, std::size_t N>
 void my_array<T, N>::fill(const T& val) {
     for (std::size_t i = 0; i < N; i++) {
         array_[i] = val;
-    }
-}
-
-template<typename T, std::size_t N>
-void my_array<T, N>::operator= (const my_array<T, N>& from) {
-    for (size_t i = 0; i < N; i++) {
-        array_[i] = from[i];
     }
 }
 
