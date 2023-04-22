@@ -116,6 +116,7 @@ const my_bool& my_bool::operator= (bool b) {
 template<std::size_t N>
 class my_array<bool, N> {
 public:
+    my_array();
     my_bool at(std::size_t index);
     bool at(std::size_t index) const;
     my_bool operator[](std::size_t index);
@@ -129,6 +130,11 @@ public:
 private:
     uint8_t array_[(N + BLOCK_SIZE - 1) / BLOCK_SIZE];
 };
+
+template<std::size_t N>
+my_array<bool, N>::my_array() {
+
+}
 
 template<std::size_t N>
 my_bool my_array<bool, N>::at(std::size_t i) {
