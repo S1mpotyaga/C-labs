@@ -53,6 +53,19 @@ void test_bool() {
     assert(a[1] == true);
 }
 
+template<std::size_t N>
+void testInOutBool() {
+    lab_13::my_array<bool, N> a;
+    a.fill(false);
+    a[1] = true;
+    a[2] = a[1];
+    std::cout << a[0] << '\n';
+    std::cout << a[1] << '\n';
+    std::cout << a[2] << '\n';
+    std::cin >> a[3];
+    std::cout << a[3] << '\n';
+}
+
 int main() {
     test_core<int, 10>();
     test_core<bool, 10>();
@@ -61,4 +74,5 @@ int main() {
     test_assign<int, 10>();
     test_assign<bool, 10>();
     test_bool<10>();
+    testInOutBool<10>();
 }

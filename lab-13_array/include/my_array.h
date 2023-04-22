@@ -95,7 +95,7 @@ std::ostream& operator<< (std::ostream& out, const my_bool & b) {
     return out;
 }
 
-std::istream& operator<< (std::istream& in, my_bool & b) {
+std::istream& operator>> (std::istream& in, my_bool b) {
     bool tmp;
     in >> tmp;
     b = tmp;
