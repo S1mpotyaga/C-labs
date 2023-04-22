@@ -62,8 +62,8 @@ void testInOutBool() {
     std::cout << a[0] << '\n';
     std::cout << a[1] << '\n';
     std::cout << a[2] << '\n';
-    std::cin >> a[3];
-    std::cout << a[3] << '\n';
+    std::cin >> a[3] >> a[2] >> a[1];
+    std::cout << a[3] << ' ' << a[2] << ' ' << a[1] << '\n';
 }
 
 int main() {
@@ -74,5 +74,5 @@ int main() {
     test_assign<int, 10>();
     test_assign<bool, 10>();
     test_bool<10>();
-    testInOutBool<10>();
+    testInOutBool<8>();
 }

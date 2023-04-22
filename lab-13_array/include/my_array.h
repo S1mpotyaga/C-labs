@@ -146,7 +146,7 @@ private:
 
 template<std::size_t N>
 my_array<bool, N>::my_array() {
-
+    fill(false);
 }
 
 template<std::size_t N>
