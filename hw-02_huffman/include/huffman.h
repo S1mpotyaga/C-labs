@@ -54,7 +54,7 @@ public:
 };
 
 const size_t CHAR_SIZE = 8;
-const size_t MAX_COUNT = 5 * 1000 * 1000 + 10;
+const size_t MAX_COUNT = 5 * (1 << 20) + 10;
 
 class MyBigString{
 private:
