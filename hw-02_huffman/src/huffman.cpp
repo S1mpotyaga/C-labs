@@ -66,7 +66,11 @@ HuffmanTree::HuffmanTree(size_t (&cnt)[N]) {
 	}
 
 	nodes.reserve(std::max(0, notZeroCount * 2 - 1));
-	std::priority_queue<HuffmanNode*> queue;
+
+	std::priority_queue<HuffmanNode*,
+						std::vector<HuffmanNode*>,
+						std::greater<HuffmanNode*> > queue;
+	
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
 		if (cnt[i] == 0) continue;
 		HuffmanNode* node = new HuffmanNode(cnt[i]);
@@ -177,22 +181,22 @@ void BitString::addBit(bool b) {
 	++bitNumber_;
 }
 
-// void printTree(HuffmanNode* node) {
-// 	if (!node) return;
-// 	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
-// 	if (node->isTerminate()) {
-// 		std::cout << "symbol: " << node->symbol() << std::endl;
-// 	}
-// 	if (node->left) {
-// 		std::cout << "left for " << node->id() << ":" << std::endl;
-// 		printTree(node->left);
-// 	}
-// 	if (node->right) {
-// 		std::cout << "right for " << node->id() << ":" << std::endl;
-// 		printTree(node->right);
-// 	}
-// 	std::cout << "end node " << node->id() << std::endl;
-//  }
+void printTree(HuffmanNode* node) {
+	if (!node) return;
+	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
+	if (node->isTerminate()) {
+		std::cout << "symbol: " << node->symbol() << std::endl;
+	}
+	if (node->left) {
+		std::cout << "left for " << node->id() << ":" << std::endl;
+		printTree(node->left);
+	}
+	if (node->right) {
+		std::cout << "right for " << node->id() << ":" << std::endl;
+		printTree(node->right);
+	}
+	std::cout << "end node " << node->id() << std::endl;
+ }
 
 void BitString::finish() {
 	result_.add(static_cast<char> (value_));
@@ -215,6 +219,8 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 
 	build(text);
 	HuffmanTree tree(count);
+
+	//printTree(tree.getRoot());
 
 	BitString bitString;
 
