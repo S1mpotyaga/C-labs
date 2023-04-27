@@ -69,14 +69,14 @@ public:
 	const char* ptr() const;
 	char operator[] (size_t i) const;
 	
-	void add(char c);
+	void operator+=(char c);
 	void read(std::ifstream& in);
 };
 
 class BitString{
 private:
 	uint8_t value_;
-	MyBigString result_;
+	std::string result_;
 	int bitNumber_;
 public:
 	BitString();

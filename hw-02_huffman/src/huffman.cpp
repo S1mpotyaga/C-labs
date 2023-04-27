@@ -142,7 +142,7 @@ char MyBigString::operator[] (size_t i) const {
 	return ptr_[i];
 }
 
-void MyBigString::add(char c) {
+void MyBigString::operator+=(char c) {
 	if (size_ == MAX_COUNT) throw MyException("Too long string!");
 	ptr_[size_] = c;
 	size_++;
@@ -154,12 +154,13 @@ void MyBigString::read(std::ifstream& in) {
 }
 
 BitString::BitString() {
+	result_ = "";
 	value_ = 0;
 	bitNumber_ = 0;
 }
 
 const char* BitString::result() const {
-	return result_.ptr();
+	return result_.c_str();
 }
 
 int BitString::bitNumber() const {
@@ -173,7 +174,7 @@ size_t BitString::size() const {
 
 void BitString::addBit(bool b) {
 	if (bitNumber_ == CHAR_SIZE) {
-		result_.add(static_cast<char> (value_));
+		result_ += static_cast<char> (value_);
 		value_ = 0;
 		bitNumber_ = 0;
 	}
@@ -199,7 +200,7 @@ void printTree(HuffmanNode* node) {
  }
 
 void BitString::finish() {
-	result_.add(static_cast<char> (value_));
+	result_ += static_cast<char> (value_);
 }
 
 void HuffmanArchiver::build(const MyBigString& text) {
@@ -275,7 +276,7 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	while (true) {
 		in.read(&tmp, sizeof(tmp));
 		if (!in.good()) break;
-		compressed.add(tmp);
+		compressed += tmp;
 	}
 
 	std::cout << compressed.size() << '\n';
@@ -291,7 +292,7 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 			if (b) node = node->right;
 			else node = node->left;
 			if (node->isTerminate()) {
-				result.add(node->symbol());
+				result += node->symbol();
 				node = tree.getRoot();
 			}
 		}
