@@ -36,6 +36,7 @@ private:
 void combine(HuffmanNode* parent, HuffmanNode* left, HuffmanNode* right);
 
 const size_t SYMB_COUNT = 256;
+const size_t ADDITION = 128;
 
 class HuffmanTree{
 private:
@@ -49,11 +50,11 @@ public:
 	~HuffmanTree();
 	HuffmanNode* getRoot() const;
 
-	std::vector<bool> getCode(const char c) const;
+	std::vector<bool> getCode(char c) const;
 };
 
 const size_t CHAR_SIZE = 8;
-const size_t MAX_COUNT = 5 * 1000 + 10;
+const size_t MAX_COUNT = 5 * 1000 * 1000 + 10;
 
 class MyBigString{
 private:

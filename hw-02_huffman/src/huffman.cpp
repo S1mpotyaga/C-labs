@@ -70,7 +70,7 @@ HuffmanTree::HuffmanTree(size_t (&cnt)[N]) {
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
 		if (cnt[i] == 0) continue;
 		HuffmanNode* node = new HuffmanNode(cnt[i]);
-		node->madeTerminate(static_cast<char>(i));
+		node->madeTerminate(static_cast<char>(i - ADDITION));
 		queue.push(node);
 		nodes.push_back(node);
 		codeId[i] = static_cast<int>(nodes.size()) - 1;
@@ -105,9 +105,10 @@ HuffmanNode* HuffmanTree::getRoot() const {
 	return nodes[rootId];
 }
 
-std::vector<bool> HuffmanTree::getCode(const char c) const{
+std::vector<bool> HuffmanTree::getCode(char c) const{
 	std::vector<bool> result;
-	HuffmanNode* node = nodes[codeId[static_cast<int>(c)]];
+	int index = codeId[static_cast<int> (c) + ADDITION];
+	HuffmanNode* node = nodes[index];
 	while (node->parent != nullptr) {
 		result.push_back(node->edge);
 		node = node->parent;
@@ -176,22 +177,22 @@ void BitString::addBit(bool b) {
 	++bitNumber_;
 }
 
-// void printTree(HuffmanNode* node) {
-// 	if (!node) return;
-// 	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
-// 	if (node->isTerminate()) {
-// 		std::cout << "symbol: " << node->symbol() << std::endl;
-// 	}
-// 	if (node->left) {
-// 		std::cout << "left for " << node->id() << ":" << std::endl;
-// 		printTree(node->left);
-// 	}
-// 	if (node->right) {
-// 		std::cout << "right for " << node->id() << ":" << std::endl;
-// 		printTree(node->right);
-// 	}
-// 	std::cout << "end node " << node->id() << std::endl;
-//  }
+void printTree(HuffmanNode* node) {
+	if (!node) return;
+	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
+	if (node->isTerminate()) {
+		std::cout << "symbol: " << node->symbol() << std::endl;
+	}
+	if (node->left) {
+		std::cout << "left for " << node->id() << ":" << std::endl;
+		printTree(node->left);
+	}
+	if (node->right) {
+		std::cout << "right for " << node->id() << ":" << std::endl;
+		printTree(node->right);
+	}
+	std::cout << "end node " << node->id() << std::endl;
+ }
 
 void BitString::finish() {
 	result_.add(static_cast<char> (value_));
@@ -200,7 +201,8 @@ void BitString::finish() {
 void HuffmanArchiver::build(const MyBigString& text) {
 	std::fill(count, count + SYMB_COUNT, 0);
 	for (size_t i = 0; i < text.size(); i++) {
-		count[static_cast<int>(text[i])]++;
+		int index = static_cast<int>(text[i]) + ADDITION;
+		count[index]++;
 	}
 }
 
@@ -213,6 +215,8 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 
 	build(text);
 	HuffmanTree tree(count);
+
+	printTree(tree.getRoot());
 
 	BitString bitString;
 
