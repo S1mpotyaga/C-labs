@@ -240,10 +240,12 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 	const char* result = bitString.result();
 
 	
-	out.write(result, bitString.size());
+	for (size_t i = 0; i < bitString.size(); i++) {
+		out.write(result + i, sizeof(char));
+	}
 	
 	std::cout << bitString.size() << '\n';
-	std::cout << SYMB_COUNT + sizeof(bitNum) << '\n';
+	std::cout << SYMB_COUNT * sizeof(size_t) + sizeof(bitNum) << '\n';
 }
 
 void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
@@ -287,7 +289,7 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	out.write(result.ptr(), result.size());
 
 	std::cout << result.size() << '\n';
-	std::cout << SYMB_COUNT + sizeof(lastBitNumber) << '\n';
+	std::cout << SYMB_COUNT * sizeof(size_t) + sizeof(lastBitNumber) << '\n';
 }
 
 MyException::MyException(std::string s) {
