@@ -177,22 +177,22 @@ void BitString::addBit(bool b) {
 	++bitNumber_;
 }
 
-void printTree(HuffmanNode* node) {
-	if (!node) return;
-	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
-	if (node->isTerminate()) {
-		std::cout << "symbol: " << node->symbol() << std::endl;
-	}
-	if (node->left) {
-		std::cout << "left for " << node->id() << ":" << std::endl;
-		printTree(node->left);
-	}
-	if (node->right) {
-		std::cout << "right for " << node->id() << ":" << std::endl;
-		printTree(node->right);
-	}
-	std::cout << "end node " << node->id() << std::endl;
- }
+// void printTree(HuffmanNode* node) {
+// 	if (!node) return;
+// 	std::cout << "node: " << node->id() << " freq: " << node->frequency << std::endl;
+// 	if (node->isTerminate()) {
+// 		std::cout << "symbol: " << node->symbol() << std::endl;
+// 	}
+// 	if (node->left) {
+// 		std::cout << "left for " << node->id() << ":" << std::endl;
+// 		printTree(node->left);
+// 	}
+// 	if (node->right) {
+// 		std::cout << "right for " << node->id() << ":" << std::endl;
+// 		printTree(node->right);
+// 	}
+// 	std::cout << "end node " << node->id() << std::endl;
+//  }
 
 void BitString::finish() {
 	result_.add(static_cast<char> (value_));
@@ -215,8 +215,6 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 
 	build(text);
 	HuffmanTree tree(count);
-
-	printTree(tree.getRoot());
 
 	BitString bitString;
 
