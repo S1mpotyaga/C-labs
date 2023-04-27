@@ -217,6 +217,11 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 
 	std::cout << text.size() << '\n';
 
+	if (text.size() == 0) {
+		std::cout << 0 << '\n';
+		std::cout << 0 << '\n';
+		return;
+	}
 	build(text);
 	HuffmanTree tree(count);
 
@@ -253,6 +258,12 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
 		in.read((char*)(count + i), sizeof(count[i]));
 		if (!in.good()) {
+			if (i == 0) {
+				std::cout << 0 << '\n';
+				std::cout << 0 << '\n';
+				std::cout << 0 << '\n';
+				return;
+			}
 			throw dataException;
 		}
 	}
