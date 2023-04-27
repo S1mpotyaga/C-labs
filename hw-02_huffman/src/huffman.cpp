@@ -33,6 +33,7 @@ void HuffmanNode::madeTerminate(char c) {
 }
 
 char HuffmanNode::symbol() const {
+	if (!isTerminate_) throw MyException("Error: call symbol, when node is not terminate");
 	return symbol_;
 }
 
@@ -115,23 +116,59 @@ std::vector<bool> HuffmanTree::getCode(const char c) const{
 	return result;
 }
 
+MyBigString::MyBigString() {
+	ptr_ = new char[MAX_COUNT];
+	size_ = 0;
+}
+
+MyBigString::~MyBigString() {
+	delete[] ptr_;
+}
+
+size_t MyBigString::size() const {
+	return size_;
+}
+
+const char* MyBigString::ptr() const {
+	return static_cast<const char*> (ptr_);
+}
+
+char MyBigString::operator[] (size_t i) const {
+	return ptr_[i];
+}
+
+void MyBigString::add(char c) {
+	if (size_ == MAX_COUNT) throw MyException("Too long string!");
+	ptr_[size_] = c;
+	size_++;
+}
+
+void MyBigString::read(std::ifstream& in) {
+	in.read(ptr_, MAX_COUNT);
+	size_ = in.gcount();
+}
+
 BitString::BitString() {
-	result_ = "";
 	value_ = 0;
 	bitNumber_ = 0;
 }
 
-std::string BitString::result() const {
-	return result_;
+const char* BitString::result() const {
+	return result_.ptr();
 }
 
 int BitString::bitNumber() const {
 	return bitNumber_;
 }
 
+size_t BitString::size() const {
+	return result_.size();
+}
+
+
 void BitString::addBit(bool b) {
 	if (bitNumber_ == CHAR_SIZE) {
-		result_ += static_cast<char> (value_);
+		result_.add(static_cast<char> (value_));
 		value_ = 0;
 		bitNumber_ = 0;
 	}
@@ -157,48 +194,47 @@ void BitString::addBit(bool b) {
 //  }
 
 void BitString::finish() {
-	result_ += static_cast<char> (value_);
+	result_.add(static_cast<char> (value_));
 }
 
-void HuffmanArchiver::build(const std::string& text) {
+void HuffmanArchiver::build(const MyBigString& text) {
 	std::fill(count, count + SYMB_COUNT, 0);
-	for (char c : text) {
-		count[static_cast<int>(c)]++;
+	for (size_t i = 0; i < text.size(); i++) {
+		count[static_cast<int>(text[i])]++;
 	}
 }
 
 void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
-	char* buffer = new char[MAX_COUNT];	
+	MyBigString text;
 
-	in.read(buffer, MAX_COUNT);
-	size_t symbCount = in.gcount();
-	buffer[symbCount] = '\0';
-	std::string text(buffer); 
+	text.read(in);
 
 	std::cout << text.size() << '\n';
-
-	delete[] buffer;
 
 	build(text);
 	HuffmanTree tree(count);
 
 	BitString bitString;
 
-	for (char c : text) {
-		for (bool b : tree.getCode(c)) bitString.addBit(b);
+	for (size_t i = 0; i < text.size(); i++) {
+		for (bool b : tree.getCode(text[i])) bitString.addBit(b);
 	}
+
 	bitString.finish();
 
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
 		out.write((char*) (count + i), sizeof(count[i]));
 	}
 	int bitNum = bitString.bitNumber();
+	
 	out.write((char*)(&bitNum), sizeof(bitNum));
-	std::string result = bitString.result();
-	for (size_t i = 0; i < result.size(); i++) {
-		out.write(&result[i], sizeof(result[i]));
-	}
-	std::cout << result.size() << '\n';
+	
+	const char* result = bitString.result();
+
+	
+	out.write(result, bitString.size());
+	
+	std::cout << bitString.size() << '\n';
 	std::cout << SYMB_COUNT + sizeof(bitNum) << '\n';
 }
 
@@ -213,18 +249,19 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	int lastBitNumber = 0;
 	in.read((char*)&lastBitNumber, sizeof(lastBitNumber));
 	if (!in.good()) throw dataException;
-	std::string compressed;
+	MyBigString compressed;
 	char tmp;
 	while (true) {
 		in.read(&tmp, sizeof(tmp));
 		if (!in.good()) break;
-		compressed += tmp;
+		compressed.add(tmp);
 	}
 
 	std::cout << compressed.size() << '\n';
 	
 	HuffmanTree tree(count);
-	std::string result;
+	MyBigString result; 
+
 	HuffmanNode* node = tree.getRoot();
 	for (size_t i = 0; i < compressed.size(); i++) {
 		size_t m = (i + 1 == compressed.size() ? lastBitNumber : CHAR_SIZE);
@@ -233,15 +270,13 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 			if (b) node = node->right;
 			else node = node->left;
 			if (node->isTerminate()) {
-				result += node->symbol();
+				result.add(node->symbol());
 				node = tree.getRoot();
 			}
 		}
 	}
 	
-	for (size_t i = 0; i < result.size(); i++) {
-		out.write(&result[i], sizeof(result[i]));
-	}
+	out.write(result.ptr(), result.size());
 
 	std::cout << result.size() << '\n';
 	std::cout << SYMB_COUNT + sizeof(lastBitNumber) << '\n';

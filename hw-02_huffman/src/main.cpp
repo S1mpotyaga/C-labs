@@ -6,6 +6,7 @@
 #include <exception>
 
 int main(int argc, char* argv[]) {
+
 	bool isCompress = false;
 	bool isDecompress = false;
 	std::string fromPath = "";
@@ -65,8 +66,3 @@ int main(int argc, char* argv[]) {
 		}
 	}
 }
-
-/*
-samples/sample1.txt
-samples/sampleOut.txt
-*/

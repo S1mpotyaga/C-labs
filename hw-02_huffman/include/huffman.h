@@ -35,8 +35,6 @@ private:
 
 void combine(HuffmanNode* parent, HuffmanNode* left, HuffmanNode* right);
 
-
-
 const size_t SYMB_COUNT = 256;
 
 class HuffmanTree{
@@ -55,16 +53,35 @@ public:
 };
 
 const size_t CHAR_SIZE = 8;
+const size_t MAX_COUNT = 5 * 1000 + 10;
+
+class MyBigString{
+private:
+	char* ptr_;
+	size_t size_;
+public:
+
+	MyBigString();
+	~MyBigString();
+
+	size_t size() const;
+	const char* ptr() const;
+	char operator[] (size_t i) const;
+	
+	void add(char c);
+	void read(std::ifstream& in);
+};
 
 class BitString{
 private:
 	uint8_t value_;
+	MyBigString result_;
 	int bitNumber_;
-	std::string result_;
 public:
 	BitString();
-	std::string result() const;
+	const char* result() const;
 	int bitNumber() const;
+	size_t size() const;
 
 	void addBit(bool b);
 	void finish();
@@ -72,10 +89,9 @@ public:
 
 class HuffmanArchiver {
 private:
-	const size_t MAX_COUNT = 5 * 1000 * 1000 + 10;
 	size_t count[SYMB_COUNT];
 
-	void build(const std::string& s);
+	void build(const MyBigString& text);
 public:
 	HuffmanArchiver() = default;
 
