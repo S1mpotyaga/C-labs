@@ -55,6 +55,14 @@ void combine(HuffmanNode* parent, HuffmanNode* left, HuffmanNode* right) {
 	}
 }
 
+size_t fromCharToInt(char c) {
+	return static_cast<size_t> (c) + ADDITION;
+}
+
+char fromIntToChar(size_t x) {
+	return static_cast<char>(x - ADDITION);
+}
+
 template<size_t N>
 HuffmanTree::HuffmanTree(size_t (&cnt)[N]) {
 	if (N != SYMB_COUNT) throw std::length_error("Incorrect array length");
@@ -74,7 +82,7 @@ HuffmanTree::HuffmanTree(size_t (&cnt)[N]) {
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
 		if (cnt[i] == 0) continue;
 		HuffmanNode* node = new HuffmanNode(cnt[i]);
-		node->madeTerminate(static_cast<char>(i - ADDITION));
+		node->madeTerminate(fromIntToChar(i));
 		queue.push(node);
 		nodes.push_back(node);
 		codeId[i] = static_cast<int>(nodes.size()) - 1;
@@ -111,7 +119,7 @@ HuffmanNode* HuffmanTree::getRoot() const {
 
 std::vector<bool> HuffmanTree::getCode(char c) const{
 	std::vector<bool> result;
-	int index = codeId[static_cast<int> (c) + ADDITION];
+	int index = codeId[fromCharToInt(c)];
 	HuffmanNode* node = nodes[index];
 	while (node->parent != nullptr) {
 		result.push_back(node->edge);
@@ -206,7 +214,7 @@ void BitString::finish() {
 void HuffmanArchiver::build(const MyBigString& text) {
 	std::fill(count, count + SYMB_COUNT, 0);
 	for (size_t i = 0; i < text.size(); i++) {
-		int index = static_cast<int>(text[i]) + ADDITION;
+		size_t index = fromCharToInt(text[i]);
 		count[index]++;
 	}
 }
@@ -236,12 +244,34 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 
 	bitString.finish();
 
+	std::vector<std::pair<char, size_t> > countWithoutZeroes;
+
 	for (size_t i = 0; i < SYMB_COUNT; i++) {
-		out.write((char*) (count + i), sizeof(count[i]));
+		if (count[i] != 0)
+			countWithoutZeroes.push_back(
+				std::make_pair(fromIntToChar(i), count[i])
+			);
 	}
+
+	size_t countSize = countWithoutZeroes.size();
+
+	out.write(reinterpret_cast<char*>(&countSize), sizeof(countSize));
+
+	for (size_t i = 0; i < countSize; i++) {
+		out.write(&countWithoutZeroes[i].first,
+			sizeof(countWithoutZeroes[i].first));
+
+		out.write(reinterpret_cast<char*>(&countWithoutZeroes[i].second),
+			sizeof(countWithoutZeroes[i].second));
+
+	}
+
+	// for (size_t i = 0; i < SYMB_COUNT; i++) {
+	// 	out.write((char*) (count + i), sizeof(count[i]));
+	// }
 	int bitNum = bitString.bitNumber();
-	
-	out.write((char*)(&bitNum), sizeof(bitNum));
+
+	out.write(reinterpret_cast<char*>(&bitNum), sizeof(bitNum));
 	
 	const char* result = bitString.result();
 
@@ -251,22 +281,34 @@ void HuffmanArchiver::compress(std::ifstream& in, std::ofstream& out){
 	}
 	
 	std::cout << bitString.size() << '\n';
-	std::cout << SYMB_COUNT * sizeof(size_t) + sizeof(bitNum) << '\n';
+	std::cout << sizeof(countSize) + countSize * (sizeof(char) + sizeof(size_t)) + sizeof(bitNum) << '\n';
 }
 
 void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	MyException dataException("Incorrect input data");
-	for (size_t i = 0; i < SYMB_COUNT; i++) {
-		in.read((char*)(count + i), sizeof(count[i]));
-		if (!in.good()) {
-			if (i == 0) {
-				std::cout << 0 << '\n';
-				std::cout << 0 << '\n';
-				std::cout << 0 << '\n';
-				return;
-			}
-			throw dataException;
-		}
+	size_t countSize;
+	
+	in.read(reinterpret_cast<char*>(&countSize), sizeof(countSize));
+	
+	if (!in.good()) {
+		std::cout << 0 << '\n';
+		std::cout << 0 << '\n';
+		std::cout << 0 << '\n';
+		return;
+	}
+
+	std::fill(count, count + SYMB_COUNT, 0);
+
+	for (size_t i = 0; i < countSize; i++) {
+		char c;
+		
+		in.read(&c, sizeof(c));
+		if (!in.good()) throw dataException;
+		
+		size_t pos = fromCharToInt(c);
+		
+		in.read(reinterpret_cast<char*>(count + pos), sizeof(count[pos]));
+		if (!in.good()) throw dataException;
 	}
 	int lastBitNumber = 0;
 	in.read((char*)&lastBitNumber, sizeof(lastBitNumber));
@@ -301,7 +343,7 @@ void HuffmanArchiver::decompress(std::ifstream& in, std::ofstream& out) {
 	out.write(result.ptr(), result.size());
 
 	std::cout << result.size() << '\n';
-	std::cout << SYMB_COUNT * sizeof(size_t) + sizeof(lastBitNumber) << '\n';
+	std::cout << sizeof(countSize) + countSize * (sizeof(char) + sizeof(size_t)) + sizeof(lastBitNumber) << '\n';
 }
 
 MyException::MyException(std::string s) {
