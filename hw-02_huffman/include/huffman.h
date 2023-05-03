@@ -63,7 +63,7 @@ public:
 void printTree(HuffmanNode* node);
 
 const size_t CHAR_SIZE = sizeof(uint8_t) * 8;
-const size_t MAX_COUNT = 5 * (1 << 20) + 10;
+const size_t MAX_COUNT = 5 * (1 << 20) + 256 * (sizeof(char) + sizeof(size_t)) + 100;
 
 class MyBigString{
 private:
