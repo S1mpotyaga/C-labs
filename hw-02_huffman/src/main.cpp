@@ -66,3 +66,24 @@ int main(int argc, char* argv[]) {
 		}
 	}
 }
+
+/*
+original tree:
+node: 27 freq: 9
+left for 27:
+node: 25 freq: 4
+symbol: c
+end node 25
+right for 27:
+node: 26 freq: 5
+left for 26:
+node: 24 freq: 3
+symbol: b
+end node 24
+right for 26:
+node: 23 freq: 2
+symbol: a
+end node 23
+end node 26
+end node 27
+*/

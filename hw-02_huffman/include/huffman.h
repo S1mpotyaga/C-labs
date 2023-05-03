@@ -15,10 +15,12 @@ public:
 	HuffmanNode* parent;
 	bool edge; //false if gone by 0, true if 1
 
-	HuffmanNode(size_t frequency, HuffmanNode* leftId,
-		HuffmanNode* rightId, HuffmanNode* parentId, bool edge);
+	HuffmanNode(size_t frequency, HuffmanNode* left = nullptr,
+		HuffmanNode* right = nullptr, HuffmanNode* parent = nullptr, bool edge = false);
 
 	bool operator< (const HuffmanNode& node) const; 
+	bool operator== (const HuffmanNode& node) const;
+	bool operator!= (const HuffmanNode& node) const;
 
 	void madeTerminate(char c);
 
@@ -33,10 +35,15 @@ private:
 	size_t id_;
 };
 
+std::ostream& operator<< (std::ostream& out, const HuffmanNode& node);
+
 void combine(HuffmanNode* parent, HuffmanNode* left, HuffmanNode* right);
 
 const size_t SYMB_COUNT = 256;
 const size_t ADDITION = 128;
+
+size_t fromCharToInt(char c);
+char fromIntToChar(size_t x);
 
 class HuffmanTree{
 private:
@@ -45,15 +52,17 @@ private:
 	int rootId;
 public:
 
-	template<size_t N>
-	HuffmanTree(size_t (&cnt)[N]);
+	HuffmanTree(size_t (&cnt)[SYMB_COUNT]);
+
 	~HuffmanTree();
 	HuffmanNode* getRoot() const;
 
 	std::vector<bool> getCode(char c) const;
 };
 
-const size_t CHAR_SIZE = 8;
+void printTree(HuffmanNode* node);
+
+const size_t CHAR_SIZE = sizeof(uint8_t) * 8;
 const size_t MAX_COUNT = 5 * (1 << 20) + 10;
 
 class MyBigString{
@@ -110,3 +119,23 @@ public:
 };
 
 }
+/*
+my tree:
+node: 32 freq: 9
+left for 32:
+node: 30 freq: 4
+symbol: c
+end node 30
+right for 32:
+node: 31 freq: 5
+left for 31:
+node: 28 freq: 2
+symbol: a
+end node 28
+right for 31:
+node: 29 freq: 3
+symbol: b
+end node 29
+end node 31
+end node 32
+*/
