@@ -2,7 +2,7 @@
 #include "io.h"
 
 int doComputation(int a, double b) {
-    int c = max(a, b);
+    int c = max(a,(int)b);
     logDebug('d');
     return c;
 }
