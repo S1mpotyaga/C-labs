@@ -19,19 +19,15 @@ char *strcat(char *dest, char *src){
 int strcmp(char *lhs, char *rhs){
 	char *it_lhs = lhs;
 	char *it_rhs = rhs;
-	for (; *it_lhs != '\0' && *it_rhs != '\0'; it_lhs++, it_rhs++){
-		int tmp = *it_lhs - *it_rhs;
-		if (tmp < 0)
-			return tmp;
-		else if (tmp > 0)
-			return tmp;
-	}
-	return 0;
+	for (; *it_lhs != '\0' && *it_rhs != '\0'; it_lhs++, it_rhs++)
+		if (*it_lhs - *it_rhs != 0)
+			break;
+	return *it_lhs - *it_rhs;
 }
 
 size_t strlen(char *str){
 	char *it_str = str;
 	while (*it_str != '\0')
 		it_str++;
-	return (size_t)(it_str - str);
+	return it_str - str;
 }
