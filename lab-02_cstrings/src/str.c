@@ -28,7 +28,7 @@ int my_strcmp(char *lhs, char *rhs){
 
 size_t my_strlen(char *str){
 	size_t len = 0;
-	char *it_str = str;
+	char *it_str = (char*)str;
 	while (*it_str != '\0'){
 		it_str++;
 		len++;

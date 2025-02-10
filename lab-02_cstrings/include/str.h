@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #ifndef _MY_STR_
 
 #define _MY_STR_

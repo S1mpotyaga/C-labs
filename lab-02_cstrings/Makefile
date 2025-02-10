@@ -1,6 +1,6 @@
 CC=gcc
 INCLUDES=-Iinclude
-FLAGS=-c -Wall -Wextra -Werror -lc
+FLAGS=-c -Wall -Wextra -Werror
 BUILD_DIR=obj
 SRC_DIR=src
 EXECUTABLE=lab-02_cstrings
