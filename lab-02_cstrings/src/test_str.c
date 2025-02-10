@@ -1,10 +1,12 @@
 #include "test_str.h"
-#include <assert.h>
+#include "str.h"
+#include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 void test_strcpy(){
 	char a[] = "Hello", b[] = "aba", c[] = "";
-	char a_cpy[10] = "",  b_cpy[10] = "acd", c_cpy[10] = "acd";
+	char a_cpy[10] = "",  b_cpy[10] = "acd", c_cpy[10] = "a";
 	assert(my_strcpy(a_cpy, a) == a);
 	assert(my_strcpy(b_cpy, b) == b);
 	assert(my_strcpy(c_cpy, c) == c);
