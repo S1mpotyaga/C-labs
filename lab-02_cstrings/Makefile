@@ -1,8 +1,8 @@
 CC=gcc
 INCLUDES=-Iinclude
-FLAGS=-c -Wall -Wextra -Werror
+FLAGS=-c -Wall -Wextra -Werror -lc
 BUILD_DIR=obj
-BUILD_SRC=src
+SRC_DIR=src
 EXECUTABLE=lab-02_cstrings
 
 build: compile
@@ -11,13 +11,13 @@ build: compile
 compile: $(BUILD_DIR)/test_str.o $(BUILD_DIR)/str.o $(BUILD_DIR)/test.o
 
 $(BUILD_DIR)/test_str.o:
-	$(CC) $(FLAGS) $(INCLUDES) $(BUILD_SRC)/test_str.c -o $(BUILD_DIR)/test_str.o
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/test_str.c -o $(BUILD_DIR)/test_str.o
 
 $(BUILD_DIR)/str.o:
-	$(CC) $(FLAGS) $(INCLUDES) $(BUILD_SRC)/str.c -o $(BUILD_DIR)/str.o
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/str.c -o $(BUILD_DIR)/str.o
 
 $(BUILD_DIR)/test.o:
-	$(CC) $(FLAGS) $(INCLUDES) $(BUILD_SRC)/test.c -o $(BUILD_DIR)/test.o
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/test.c -o $(BUILD_DIR)/test.o
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(EXECUTABLE)

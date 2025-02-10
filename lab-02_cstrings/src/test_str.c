@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 
 void test_strcpy(){
 	char a[] = "Hello", b[] = "aba", c[] = "";
 	char a_cpy[10] = "",  b_cpy[10] = "acd", c_cpy[10] = "a";
-	assert(my_strcpy(a_cpy, a) == a);
-	assert(my_strcpy(b_cpy, b) == b);
-	assert(my_strcpy(c_cpy, c) == c);
+	assert(strcmp(my_strcpy(a_cpy, a), strcpy(a_cpy, a)));
+	assert(strcmp(my_strcpy(b_cpy, b), strcpy(b_cpy, b)));
+	assert(strcmp(my_strcpy(c_cpy, c), strcpy(c_cpy, c)));
 }
 
 void test_strcat(){
@@ -39,5 +40,4 @@ void test_strlen(){
 	assert(my_strlen(a) == strlen(a));
 	assert(my_strlen(b) == strlen(b));
 	assert(my_strlen(c) == strlen(c));
-}
 }

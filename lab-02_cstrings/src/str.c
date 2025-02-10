@@ -1,4 +1,5 @@
 #include "str.h"
+#include<stddef.h>
 
 char *my_strcpy(char *dest, char *src){
 	char *it_dest = dest;
@@ -26,8 +27,11 @@ int my_strcmp(char *lhs, char *rhs){
 }
 
 size_t my_strlen(char *str){
+	size_t len = 0;
 	char *it_str = str;
-	while (*it_str != '\0')
+	while (*it_str != '\0'){
 		it_str++;
-	return it_str - str;
+		len++;
+	}
+	return len;
 }
