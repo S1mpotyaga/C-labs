@@ -1,11 +1,13 @@
-#pragma once
+#ifndef _TEST_STR_
+
+#define _TEST_STR_
 
 void test_strcpy();
 
 void test_strcat();
 
-int check(int a, int b);
-
 void test_strcmp();
 
 void test_strlen();
+
+#endif

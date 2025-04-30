@@ -1,30 +1,23 @@
-.PHONY: all prepare compile link clean
-
-CC = gcc
-INCLUDES =-Iinclude
-C_FLAGS =-c -Wall -Werror -Wextra 
+CC=gcc
+INCLUDES=-Iinclude
+FLAGS=-c -Wall -Wextra -Werror
+BUILD_DIR=obj
+SRC_DIR=src
 EXECUTABLE=lab-02_cstrings
 
-all: prepare compile link
+build: compile
+	$(CC) $(BUILD_DIR)/*.o -o $(EXECUTABLE)
 
-prepare:
-	if [ ! -d "obj" ]; then mkdir obj; fi
+compile: $(BUILD_DIR)/test_str.o $(BUILD_DIR)/str.o $(BUILD_DIR)/test.o
 
-compile: obj/str.o obj/test_str.o obj/test.o
+$(BUILD_DIR)/test_str.o:
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/test_str.c -o $(BUILD_DIR)/test_str.o
 
-obj/str.o: src/str.c
-	$(CC) $(C_FLAGS) $(INCLUDES) src/str.c -o obj/str.o
+$(BUILD_DIR)/str.o:
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/str.c -o $(BUILD_DIR)/str.o
 
-obj/test_str.o: src/test_str.c
-	$(CC) $(C_FLAGS) $(INCLUDES) src/test_str.c -o obj/test_str.o
-
-obj/test.o: src/test.c
-	$(CC) $(C_FLAGS) $(INCLUDES) src/test.c -o obj/test.o
-
-link: $(EXECUTABLE)
-
-$(EXECUTABLE): obj/str.o obj/test_str.o obj/test.o
-	$(CC) obj/*o -o $(EXECUTABLE)
+$(BUILD_DIR)/test.o:
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/test.c -o $(BUILD_DIR)/test.o
 
 clean:
-	rm -rf obj/*.o $(EXECUTABLE)
+	rm -rf $(BUILD_DIR)/*.o $(EXECUTABLE)

@@ -1,11 +1,15 @@
-#pragma once
-
 #include <stddef.h>
 
-char* my_strcpy (char* restrict s_dest, const char* restrict s_from);
+#ifndef _MY_STR_
 
-char* my_strcat(char* restrict s_dest, const char* restrict s_from);
+#define _MY_STR_
 
-int my_strcmp(const char* s, const char* t);
+char *my_strcpy(char *dest, char *src);
 
-size_t my_strlen(const char* s);
+char *my_strcat(char *dest, char *src);
+
+int my_strcmp(char *lhs, char *rhs);
+
+size_t my_strlen(char *str);
+
+#endif                   
