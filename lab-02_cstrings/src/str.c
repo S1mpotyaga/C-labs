@@ -21,11 +21,11 @@ int my_strcmp(char *lhs, char *rhs){
 	char *it_lhs = lhs;
 	char *it_rhs = rhs;
 	for (; *it_lhs != '\0' && *it_rhs != '\0'; it_lhs++, it_rhs++)
-		if (*it_lhs - *it_rhs != 0)
+		if (*it_lhs != *it_rhs)
 			break;
 	return *it_lhs - *it_rhs;
 }
-
+                                                             
 size_t my_strlen(char *str){
 	size_t len = 0;
 	char *it_str = (char*)str;

@@ -6,37 +6,49 @@
 #include <stdbool.h>
 
 void test_strcpy(){
-	char a[] = "Hello", b[] = "aba", c[] = "";
-	char a_cpy[10] = "",  b_cpy[10] = "acd", c_cpy[10] = "a";
-	assert(strcmp(my_strcpy(a_cpy, a), strcpy(a_cpy, a)));
-	assert(strcmp(my_strcpy(b_cpy, b), strcpy(b_cpy, b)));
-	assert(strcmp(my_strcpy(c_cpy, c), strcpy(c_cpy, c)));
+	char a[] = "Hello";
+	char b[] = "aba";
+	char c[] = "";
+	char a_cpy[10] = "";
+	char b_cpy[10] = "acd";
+	char c_cpy[10] = "a";
+	assert(strcmp(my_strcpy(a_cpy, a), a) == 0);
+	assert(strcmp(my_strcpy(b_cpy, b), b) == 0);
+	assert(strcmp(my_strcpy(c_cpy, c), c) == 0);
 }
 
 void test_strcat(){
-	char a[] = "Hello", b[] = "", c[] = "me";
-	char a_tmp[] = "!", b_tmp[] = "Hello!", c_tmp[] = ":)";
-	char check1[] = "Hello!", check2[] = "me:)";
+	char a[] = "Hello";
+	char b[] = "";
+	char c[] = "me";
+	char d[] = "";
+	char a_tmp[] = "!";
+	char b_tmp[] = "Hello!";
+	char c_tmp[] = ":)";
+	char d_tmp[] = "";
+	char check1[] = "Hello!";
+	char check2[] = "me:)";
+	char check3[] = "";
 	assert(strcmp(my_strcat(a, a_tmp), check1) == 0);
 	assert(strcmp(my_strcat(b, b_tmp), check1) == 0);
 	assert(strcmp(my_strcat(c, c_tmp), check2) == 0);
+	assert(strcmp(my_strcat(d, d_tmp), check3) == 0);
 }
 
-bool check(int a, int b){
-	if (a == 0 && b == 0)
-		return true;
-	return a * b * 1ll > 0;
-}
 
 void test_strcmp(){
-	char a[] = "aba", b[] = "ajfgkerngjea", c[] = "";
-	assert(check(my_strcmp(a, b), strcmp(a, b)));
-	assert(check(my_strcmp(a, c), strcmp(a, c)));
-	assert(check(my_strcmp(b, c), strcmp(b, c)));
+	char a[] = "aba";
+	char b[] = "ajfgkerngjea";
+	char c[] = "";
+	assert(check(my_strcmp(a, b) == strcmp(a, b)));
+	assert(check(my_strcmp(a, c) == strcmp(a, c)));
+	assert(check(my_strcmp(b, c) == strcmp(b, c)));
 }
 
 void test_strlen(){
-	char a[] = "ajbsdfjkne", b[] = "", c[] = "\n";
+	char a[] = "ajbsdfjkne";
+	char b[] = "";
+	char c[] = "\n";
 	assert(my_strlen(a) == strlen(a));
 	assert(my_strlen(b) == strlen(b));
 	assert(my_strlen(c) == strlen(c));

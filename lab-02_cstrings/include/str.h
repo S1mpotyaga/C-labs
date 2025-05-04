@@ -4,12 +4,12 @@
 
 #define _MY_STR_
 
-char *my_strcpy(char *dest, char *src);
+char *my_strcpy(char *dest, const char *src);
 
-char *my_strcat(char *dest, char *src);
+char *my_strcat(char *dest, const char *src);
 
-int my_strcmp(char *lhs, char *rhs);
+int my_strcmp(const char *lhs, const char *rhs);
 
-size_t my_strlen(char *str);
+size_t my_strlen(const char *str);
 
 #endif                   
