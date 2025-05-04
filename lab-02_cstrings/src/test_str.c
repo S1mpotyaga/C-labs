@@ -40,9 +40,9 @@ void test_strcmp(){
 	char a[] = "aba";
 	char b[] = "ajfgkerngjea";
 	char c[] = "";
-	assert(check(my_strcmp(a, b) == strcmp(a, b)));
-	assert(check(my_strcmp(a, c) == strcmp(a, c)));
-	assert(check(my_strcmp(b, c) == strcmp(b, c)));
+	assert(my_strcmp(a, b) == strcmp(a, b));
+	assert(my_strcmp(a, c) == strcmp(a, c));
+	assert(my_strcmp(b, c) == strcmp(b, c));
 }
 
 void test_strlen(){
