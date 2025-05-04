@@ -1,7 +1,7 @@
 #include "str.h"
 #include<stddef.h>
 
-char *my_strcpy(char *dest, char *src){
+char *my_strcpy(char *dest, const char *src){
 	char *it_dest = dest;
 	char *it_src = src;
 	for (; *it_src != '\0'; it_src++, it_dest++)
@@ -9,7 +9,7 @@ char *my_strcpy(char *dest, char *src){
 	return dest;
 }
 
-char *my_strcat(char *dest, char *src){
+char *my_strcat(char *dest, const char *src){
 	char *it_dest = dest;
 	while (*it_dest != '\0')
 		it_dest++;
@@ -17,7 +17,7 @@ char *my_strcat(char *dest, char *src){
 	return dest;
 }
 
-int my_strcmp(char *lhs, char *rhs){
+int my_strcmp(const char *lhs, const char *rhs){
 	char *it_lhs = lhs;
 	char *it_rhs = rhs;
 	for (; *it_lhs != '\0' && *it_rhs != '\0'; it_lhs++, it_rhs++)
@@ -26,7 +26,7 @@ int my_strcmp(char *lhs, char *rhs){
 	return *it_lhs - *it_rhs;
 }
                                                              
-size_t my_strlen(char *str){
+size_t my_strlen(const char *str){
 	size_t len = 0;
 	char *it_str = (char*)str;
 	while (*it_str != '\0'){
