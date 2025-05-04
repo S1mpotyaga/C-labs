@@ -2,7 +2,7 @@
 #include<stddef.h>
 
 char *my_strcpy(char *dest, const char *src){
-	const char *it_dest = dest;
+	char *it_dest = (char *)dest;
 	const char *it_src = src;
 	for (; *it_src != '\0'; it_src++, it_dest++)
 		*it_dest = *it_src;
