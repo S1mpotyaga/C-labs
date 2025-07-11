@@ -23,7 +23,7 @@ int mergesort(
 	size_t leftElements = elements / 2;
 	size_t rightElements = elements - leftElements;
 	void* itLeft = array;
-	void* itRight = array + leftElements * element_size;
+	void* itRight = (char*)array + leftElements * element_size;
 	if (mergesort(itLeft, leftElements, element_size, comparator) != 0){
 		return -1;
 	}
@@ -31,25 +31,25 @@ int mergesort(
 		return -1;
 	}
 	void* result = malloc(elements * element_size);
-	void* itLeftEnd = array + leftElements * element_size;
-	void* itRightEnd = array + elements * element_size;
+	void* itLeftEnd = (char*)array + leftElements * element_size;
+	void* itRightEnd = (char*)array + elements * element_size;
 	while ((itLeft != itLeftEnd) || (itRight != itRightEnd)){
 		if ((itLeft != itLeftEnd) && (itRight != itRightEnd)){
 			if (comparator(itLeft, result) < 0){
 				copy(itLeft, element_size, result);
-				itLeft += element_size;
+				itLeft = (char*)itLeft + element_size;
 			} else{
 				copy(itRight, element_size, result);
-				itRight += element_size;
+				itRight = (char*)itRight + element_size;
 			}
 		} else if (itLeft != itLeftEnd){
 			copy(itLeft, element_size, result);
-			itLeft += element_size;
+			itLeft = (char*)itLeft + element_size;
 		} else if (itRight != itRightEnd){
 			copy(itRight, element_size, result);
-			itRight += element_size;
+			itRight = (char*)itRight + element_size;
 		}
-		result += element_size;
+		result = (char*)result + element_size;
 	}
 	copy(result, elements, array);
 	free(result);
