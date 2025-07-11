@@ -52,6 +52,7 @@ int mergesort(
 		result = (char*)result + element_size;
 	}
 	copy(result, elements, array);
+	result = (char*)result - elements * element_size;
 	free(result);
 	return 0;
 }
