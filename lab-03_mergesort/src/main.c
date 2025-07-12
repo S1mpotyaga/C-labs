@@ -25,11 +25,14 @@ int main(int argc, char* argv[]){
 			a[i] = atoi(argv[i + 2]);
 		}
 		if (mergesort(a, n, sizeof(a[0]), comporator_int) != 0){
-			printf("Error!");
+			printf("Error: memory allocation failed.");
 			return 0;
 		}
 		for (size_t i = 0; i < n; ++i){
-			printf("%d ", a[i]);
+			printf("%d", a[i]);
+			if (i != n - 1){
+				printf(" ");
+			}
 		}
 	} else if (strcmp(argv[1], "char") == 0){
 		char a[n];
@@ -37,11 +40,14 @@ int main(int argc, char* argv[]){
 			a[i] = argv[i + 2][0];
 		}
 		if (mergesort(a, n, sizeof(a[0]), comporator_char) != 0){
-			printf("Error!");
+			printf("Error: memory allocation failed.");
 			return 0;
 		}
 		for (size_t i = 0; i < n; ++i){
-			printf("%c ", a[i]);
+			printf("%c", a[i]);
+			if (i != n - 1){
+				printf(" ");
+			}
 		}
 	} else if (strcmp(argv[1], "str") == 0){
 		char* a[n];
@@ -49,11 +55,14 @@ int main(int argc, char* argv[]){
 			a[i] = argv[i + 2];
 		}
 		if (mergesort(a, n, sizeof(a[0]), comporator_str) != 0){
-			printf("Error!");
+			printf("Error: memory allocation failed.");
 			return 0;
 		}
 		for (size_t i = 0; i < n; ++i){
-			printf("%s ", a[i]);
+			printf("%s", a[i]);
+			if (i != n - 1){
+				printf(" ");
+			}
 		}
 	}
 	printf("\n");
