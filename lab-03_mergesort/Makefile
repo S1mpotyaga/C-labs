@@ -11,10 +11,10 @@ build: compile
 compile: $(BUILD_DIR)/mergesort.o $(BUILD_DIR)/main.o
 
 $(BUILD_DIR)/mergesort.o:
-	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/mergesort.cpp -o $(BUILD_DIR)/mergesort.o
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/mergesort.c -o $(BUILD_DIR)/mergesort.o
 
 $(BUILD_DIR)/main.o:
-	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/main.cpp -o $(BUILD_DIR)/main.o
+	$(CC) $(FLAGS) $(INCLUDES) $(SRC_DIR)/main.c -o $(BUILD_DIR)/main.o
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(EXECUTABLE)
