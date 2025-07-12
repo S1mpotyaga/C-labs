@@ -14,7 +14,7 @@ int comporator_char(const void* a, const void* b){
 }
 
 int comporator_str(const void* a, const void* b){
-	return strcmp((char*)a, (char*)b);
+	return strcmp(*(char**)a, *(char**)b);
 }
 
 int main(int argc, char* argv[]){
@@ -56,4 +56,5 @@ int main(int argc, char* argv[]){
 			printf("%s ", a[i]);
 		}
 	}
+	printf("\n");
 }

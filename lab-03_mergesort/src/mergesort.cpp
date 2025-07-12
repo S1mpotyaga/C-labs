@@ -1,58 +1,54 @@
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
-
-void copy(void* src, size_t count, void* dest){
-	char* itFrom = (char*) src;
-	char* itRes = (char*) dest;
-	for (size_t i = 0; i < count; ++i){
-		*itRes = *itFrom;
-		itRes++;
-		itFrom++;
-	}
-}
+#include <cstring>
 
 int mergesort(
 	void* array,
 	size_t elements, size_t element_size,
 	int (*comparator)(const void*, const void*)
 ){
-	if (elements <= 1){
+	if (elements < 2){
 		return 0;
 	}
 	size_t leftElements = elements / 2;
 	size_t rightElements = elements - leftElements;
-	void* itLeft = array;
-	void* itRight = (char*)array + leftElements * element_size;
-	if (mergesort(itLeft, leftElements, element_size, comparator) != 0){
+	char* arrayCopy = (char*)array;
+	if (mergesort(array, leftElements, element_size, comparator) != 0){
 		return -1;
 	}
-	if (mergesort(itRight, rightElements, element_size, comparator) != 0){
+	if (mergesort((char*)array + leftElements * element_size, rightElements, element_size, comparator) != 0){
 		return -1;
 	}
 	void* result = malloc(elements * element_size);
-	void* itLeftEnd = (char*)array + leftElements * element_size;
-	void* itRightEnd = (char*)array + elements * element_size;
-	while ((itLeft != itLeftEnd) || (itRight != itRightEnd)){
-		if ((itLeft != itLeftEnd) && (itRight != itRightEnd)){
-			if (comparator(itLeft, result) < 0){
-				copy(itLeft, element_size, result);
-				itLeft = (char*)itLeft + element_size;
-			} else{
-				copy(itRight, element_size, result);
-				itRight = (char*)itRight + element_size;
-			}
-		} else if (itLeft != itLeftEnd){
-			copy(itLeft, element_size, result);
-			itLeft = (char*)itLeft + element_size;
-		} else if (itRight != itRightEnd){
-			copy(itRight, element_size, result);
-			itRight = (char*)itRight + element_size;
-		}
-		result = (char*)result + element_size;
+	if (!result){
+		return -1;
 	}
-	copy(result, elements, array);
-	result = (char*)result - elements * element_size;
+	size_t indLeft = 0, indRight = leftElements, indResult = 0;
+	while (indLeft < leftElements && indRight < elements){
+		void* leftCurrent = (char*)arrayCopy + indLeft * element_size;
+		void* rightCurrent = (char*)arrayCopy + indRight * element_size;
+		if (comparator(leftCurrent, rightCurrent) < 0){
+			memcpy((char*)result + indResult * element_size, leftCurrent, element_size);
+			indLeft++;
+		} else{
+			memcpy((char*)result + indResult * element_size, rightCurrent, element_size);
+			indRight++;
+		}
+		indResult++;
+	}
+	while (indLeft < leftElements){
+		void* leftCurrent = (char*)arrayCopy + indLeft * element_size;
+		memcpy((char*)result + indResult * element_size, leftCurrent, element_size);
+		indLeft++;
+		indResult++;
+	}
+	while (indRight < elements){
+		void* rightCurrent = (char*)arrayCopy + indRight * element_size;
+		memcpy((char*)result + indResult * element_size, rightCurrent, element_size);
+		indRight++;
+		indResult++;
+	}
+	memcpy(arrayCopy, result, elements * element_size);
 	free(result);
 	return 0;
 }
