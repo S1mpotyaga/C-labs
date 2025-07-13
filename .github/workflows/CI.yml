@@ -5,9 +5,9 @@ on:
     branches: ["*"]
 
 jobs:
-  nuild_and_run:
+  build_and_run:
     runs-on: ubuntu-latest
     steps:
       - name: Run tests
-        run: ./run_tests ${{ github.ref }}
+        run: ./run_tests ${{ github.event.pull_request.head.ref }}
 
