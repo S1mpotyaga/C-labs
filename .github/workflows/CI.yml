@@ -1,0 +1,13 @@
+name: Build and run tests
+
+on:
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  nuild_and_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tests
+        run: ./run_tests ${{ github.ref }}
+
