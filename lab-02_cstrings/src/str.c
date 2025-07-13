@@ -1,5 +1,5 @@
 #include "str.h"
-#include<stddef.h>
+#include <stddef.h>
 
 char *my_strcpy(char *dest, const char *src){
 	char *it_dest = (char *)dest;
@@ -19,9 +19,7 @@ char *my_strcat(char *dest, const char *src){
 	return dest;
 }
 
-int my_strcmp(const char *lhs, const char *rhs){
-	const char *it_lhs = lhs;
-	const char *it_rhs = rhs;
+int my_strcmp(const char *it_lhs, const char *it_rhs){
 	for (; *it_lhs != '\0' && *it_rhs != '\0'; it_lhs++, it_rhs++){
 		if (*it_lhs != *it_rhs){
 			break;
@@ -29,13 +27,12 @@ int my_strcmp(const char *lhs, const char *rhs){
 	}
 	return *it_lhs - *it_rhs;
 }
-                                                             
-size_t my_strlen(const char *str){
+
+size_t my_strlen(const char *it_str){
 	size_t len = 0;
-	const char *it_str = (char*)str;
 	while (*it_str != '\0'){
 		it_str++;
-		len++;     
+		len++;
 	}
 	return len;
 }
