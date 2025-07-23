@@ -83,8 +83,8 @@ int main(){
     struct intrusive_list *list = malloc(sizeof(struct intrusive_list));
     init_list(list);
     while (true){
-        printf("Enter command:\n");
-        fflush(stdout);
+        // printf("Enter command:\n");
+        // fflush(stdout);
         scanf("%10s", input);
         if (strcmp(input, "add") == 0){
             scanf("%d %d", &input_x, &input_y);
