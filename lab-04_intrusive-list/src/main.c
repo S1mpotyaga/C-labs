@@ -1,4 +1,4 @@
-#include "./include/clist.h"
+#include "clist.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -11,11 +11,12 @@
 
 struct point{
     int x, y;
-    struct intrusive_node *node;
+    struct intrusive_node node;
 };
 
 void add_point(struct intrusive_list *list, int x, int y){
     struct point *point = (struct point*) malloc(sizeof(struct point));
+    // printf("??? %p\n", (void*)point);
     point->x = x;
     point->y = y;
     add_node(list, &point->node);
@@ -25,7 +26,7 @@ bool point_equals(const struct point* a, int x, int y){
     return a->x == x && a->y == y;
 }
 
-void remove_point(struct intrusive_list *list, int x, int y){ // removes all (x, y) pairs
+void remove_point(struct intrusive_list *list, int x, int y){
     struct intrusive_node *it_node = list->head->next;
     struct intrusive_node *tmp_next = NULL;
     while (it_node != NULL){
@@ -33,6 +34,7 @@ void remove_point(struct intrusive_list *list, int x, int y){ // removes all (x,
         tmp_next = it_node->next;
         if (point_equals(point, x, y)){
             remove_node(list, it_node);
+            free(point);
         }
         it_node = tmp_next;
     }
@@ -41,13 +43,16 @@ void remove_point(struct intrusive_list *list, int x, int y){ // removes all (x,
 void show_all_points(struct intrusive_list *list){
     struct intrusive_node *it_node = list->head->next;
     while (it_node != NULL){
+        // printf("!!! %p\n", (void*)it_node);
         struct point *point = container_of(it_node, struct point, node);
+        // printf("??? %p\n", (void*)point);
         printf("(%d %d)", point->x, point->y);
         if (it_node->next != NULL){
             printf(" ");
         }
         it_node = it_node->next;
     }
+    printf("\n");
 }
 
 void remove_all_points(struct intrusive_list *list){
@@ -55,9 +60,11 @@ void remove_all_points(struct intrusive_list *list){
     list->head->next = NULL;
     struct intrusive_node *tmp_node = NULL;
     while (it_node != NULL){
+        struct point *p = container_of(it_node, struct point, node);
         tmp_node = it_node->next;
         remove_node(list, it_node);
         it_node = tmp_node;
+        free(p);
     }
 }
 
@@ -74,13 +81,16 @@ int main(){
     int input_x;
     int input_y;
     struct intrusive_list *list = malloc(sizeof(struct intrusive_list));
+    init_list(list);
     while (true){
+        printf("Enter command:\n");
+        fflush(stdout);
         scanf("%10s", input);
         if (strcmp(input, "add") == 0){
-            scanf("%d %d\n", &input_x, &input_y);
+            scanf("%d %d", &input_x, &input_y);
             add_point(list, input_x, input_y);
         } else if (strcmp(input, "rm") == 0){
-            scanf("%d %d\n", &input_x, &input_y);
+            scanf("%d %d", &input_x, &input_y);
             remove_point(list, input_x, input_y);
         } else if (strcmp(input, "print") == 0){
             show_all_points(list);
@@ -94,6 +104,7 @@ int main(){
         } else{
             printf("Unknown command\n");
         }
+        fflush(stdout);
     }
     deinit_list(list);
     return 0;
