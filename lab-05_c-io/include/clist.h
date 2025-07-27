@@ -8,6 +8,7 @@ struct intrusive_node {
 
 struct intrusive_list {
   struct intrusive_node *head;
+  struct intrusive_node *tail;
 };
 
 void init_list(struct intrusive_list *list);

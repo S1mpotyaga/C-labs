@@ -7,18 +7,16 @@ void init_list(struct intrusive_list *list){
     list->head = (struct intrusive_node*) malloc(sizeof(struct intrusive_node));
     list->head->prev = NULL;
     list->head->next = NULL;
+    list->tail = list->head;
 }
 
 
 void add_node(struct intrusive_list *list, struct intrusive_node *node){
-    struct intrusive_node *list_head = list->head;
-    struct intrusive_node *first_element = list_head->next;
-    list_head->next = node;
-    if (first_element != NULL){
-        first_element->prev = node;
-    }
-    node->prev = list_head;
-    node->next = first_element;
+    struct intrusive_node *last_element = list->tail;
+    last_element->next = node;
+    list->tail = node;
+    node->prev = last_element;
+    node->next = NULL;
 }
 
 void remove_node(struct intrusive_list *list, struct intrusive_node *node){

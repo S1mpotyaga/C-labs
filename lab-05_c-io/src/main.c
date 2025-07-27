@@ -22,8 +22,7 @@ void count(struct intrusive_node *it_node, void *data){
         return;
     }
     int *it_count = (int*) data;
-    int count = *it_count;
-    count++;
+    (*it_count)++;
 }
 
 int convert(int x){
@@ -45,7 +44,6 @@ void loadtext(struct intrusive_list *list, char *path){
     }
     fclose(infile);
 }
-
 
 void loadbin(struct intrusive_list *list, char *path){
     FILE *infile = fopen(path, "rb");
@@ -69,8 +67,8 @@ void loadbin(struct intrusive_list *list, char *path){
         // fread(&y, kBIN_BYTE, 1, infile);
         x = convert(x);
         y = convert(y);
-        printf("%d %d\n", x, y);
-        fflush(stdout);
+        // printf("%d %d\n", x, y);
+        // fflush(stdout);
         add_point(list, x, y);
     }
     fclose(infile);
