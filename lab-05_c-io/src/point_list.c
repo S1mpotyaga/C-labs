@@ -1,7 +1,7 @@
 #include "../include/point_list.h"
 
 #include <stddef.h>
-
+#include <stdlib.h>
 
 void add_point(struct intrusive_list *list, int x, int y){
     struct point *point = (struct point*) malloc(sizeof(struct point));

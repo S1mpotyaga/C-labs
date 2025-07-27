@@ -5,7 +5,7 @@ INCLUDES = -Iinclude
 FLAGS = -c -Wall -Wextra -Werror
 BUILD_DIR = obj
 SRC_DIR = src
-EXECUTABLE = lab-04_intrusive-list
+EXECUTABLE = lab-05_c-io
 
 all: clean prepare link
 
