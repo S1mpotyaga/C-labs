@@ -8,6 +8,10 @@ jobs:
   build_and_run:
     runs-on: ubuntu-latest
     steps:
+      - name: Print branch name of pull request
+        run: |
+            echo Branch name: ${{ github.event.pull_request.head.ref }}
+        
       - name: Run tests
-        run: ./run_tests ${{ github.event.pull_request.head.ref }}
-
+        run: |
+            ./run_tests ${{ github.event.pull_request.head.ref }}
