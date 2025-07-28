@@ -1,0 +1,22 @@
+name: Build and run tests
+
+on:
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print branch name of pull request
+        run: |
+            BRANCH=${{ github.event.pull_request.head.ref }}
+            TRIMMED="${BRANCH:4}"
+            echo "Trimmed branch name: $TRIMMED"
+        
+      - name: Run tests
+        run: |
+            BRANCH=${{ github.event.pull_request.head.ref }}
+            TRIMMED="${BRANCH:4}"
+            ${{ github.workspace }}/run_tests $TRIMMED
