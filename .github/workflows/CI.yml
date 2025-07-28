@@ -10,8 +10,12 @@ jobs:
     steps:
       - name: Print branch name of pull request
         run: |
-            echo Branch name: ${{ github.event.pull_request.head.ref }}[4:]
+            BRANCH=${{ github.event.pull_request.head.ref }}
+            TRIMMED="${BRANCH:4}"
+            echo "Trimmed branch name: $TRIMMED"
         
       - name: Run tests
         run: |
-            ./run_tests ${{ github.event.pull_request.head.ref }}[4:]
+            BRANCH=${{ github.event.pull_request.head.ref }}
+            TRIMMED="${BRANCH:4}"
+            ./run_tests $TRIMMED
