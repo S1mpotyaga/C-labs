@@ -19,4 +19,4 @@ jobs:
         run: |
             BRANCH=${{ github.event.pull_request.head.ref }}
             TRIMMED="${BRANCH:4}"
-            ${{ github.workspace }}/run_tests $TRIMMED
+            ${{ github.workspace }}/run-tests $TRIMMED
