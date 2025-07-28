@@ -7,6 +7,7 @@ char *my_strcpy(char *dest, const char *src){
 	for (; *it_src != '\0'; it_src++, it_dest++){
 		*it_dest = *it_src;
 	}
+    *it_dest = '\0';
 	return dest;
 }
 

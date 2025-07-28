@@ -5,7 +5,7 @@ BUILD_DIR=obj
 SRC_DIR=src
 EXECUTABLE=lab-02_cstrings
 
-build: compile
+build: clean compile
 	$(CC) $(BUILD_DIR)/*.o -o $(EXECUTABLE)
 
 compile: $(BUILD_DIR)/test_str.o $(BUILD_DIR)/str.o $(BUILD_DIR)/test.o

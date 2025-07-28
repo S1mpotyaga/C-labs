@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 void test_strcpy(){
 	char Hello[] = "Hello";
@@ -17,6 +18,18 @@ void test_strcpy(){
 	char empty_string_2[] = "";
 	char test_string[10] = "a";
 	assert(strcmp(my_strcpy(test_string, empty_string_2), empty_string_2) == 0);
+
+    char* dst = malloc(10);
+    const char src_1[] = "abcdefg";
+    const char src_2[] = "hij";
+    my_strcpy(dst, src_1);
+    my_strcpy(dst, src_2);
+    assert(strcmp(dst, src_2) == 0);
+    // for (; *dst != '\0'; ++dst){
+    //     printf(dst);
+    // }
+    // printf("\n");
+    // fflush(stdout);
 }
 
 void test_strcat(){
