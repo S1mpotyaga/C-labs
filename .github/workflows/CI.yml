@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Print branch name of pull request
         run: |
-            echo Branch name: ${{ github.event.pull_request.head.ref }}
+            echo Branch name: ${{ github.event.pull_request.head.ref }}[4:]
         
       - name: Run tests
         run: |
-            ./run_tests ${{ github.event.pull_request.head.ref }}
+            ./run_tests ${{ github.event.pull_request.head.ref }}[4:]
