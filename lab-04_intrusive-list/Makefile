@@ -10,7 +10,7 @@ EXECUTABLE = lab-04_intrusive-list
 all: clean prepare link
 
 prepare:
-	@if [ ! -d "obj" ]; then \
+	@if [ ! -d "obj" ]; then\
 		mkdir obj; \
 	fi
 
