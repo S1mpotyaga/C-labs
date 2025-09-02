@@ -12,6 +12,7 @@ jobs:
       - name: print version compilier
         run: |
             g++ --version
+            valgrind --version
       - name: Print branch name of pull request
         run: |
             BRANCH=${{ github.event.pull_request.head.ref }}
