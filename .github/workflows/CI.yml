@@ -1,9 +1,7 @@
 name: Build and run tests
-
 on:
   pull_request:
     branches: ["*"]
-
 jobs:
   build_and_run:
     runs-on: ubuntu-latest
