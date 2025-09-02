@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: install valgrind
+        run: |
+            sudo apt install valgrind
+      - name: print version compilier
+        run: |
+            g++ --version
+            valgrind --version
       - name: Print branch name of pull request
         run: |
             BRANCH=${{ github.event.pull_request.head.ref }}
