@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: print version compilier
+        run: |
+            g++ --version
       - name: Print branch name of pull request
         run: |
             BRANCH=${{ github.event.pull_request.head.ref }}
